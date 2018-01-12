@@ -1,0 +1,6 @@
+#cloud-config
+rh_subscription:
+  username: ${rhn_username}
+  password: '${rhn_password}'
+  auto-attach: False
+  add-pool: [ '${rh_subscription_pool_id}' ]
