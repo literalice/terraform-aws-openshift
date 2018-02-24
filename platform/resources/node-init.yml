@@ -1,4 +1,12 @@
 #cloud-config
+write_files:
+  - path: /etc/sysconfig/docker-storage-setup
+    permissions: 0644
+    owner: root
+    content: |
+        GROWPART=true
+        ROOT_SIZE=+100%FREE
+        STORAGE_DRIVER=overlay2
 rh_subscription:
   username: ${rhn_username}
   password: '${rhn_password}'
