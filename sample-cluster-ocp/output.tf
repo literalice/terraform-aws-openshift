@@ -1,5 +1,5 @@
-output "master_public_dns" {
-  value = "master.${var.platform_default_subdomain}"
+output "master_url" {
+  value = "https://master.${var.platform_default_subdomain}:8443"
   description = "OpenShift master(console) domain name"
 }
 
