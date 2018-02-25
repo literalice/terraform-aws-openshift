@@ -4,7 +4,6 @@ data "template_file" "inventory_template" {
   vars {
     platform_name = "${var.platform_name}"
     master_public_dns_name = "${var.master_public_dns_name}"
-    master_private_dns_name = "${var.master_private_dns_name}"
     platform_default_subdomain = "${var.platform_default_subdomain}"
   }
 }

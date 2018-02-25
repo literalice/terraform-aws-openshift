@@ -17,3 +17,7 @@ output "master_lb_arn" {
 output "master_lb_name" {
   value = "${aws_elb.master.name}"
 }
+
+output "master_private_dns_name" {
+  value = "master.${var.platform_name}.internal"
+}

@@ -37,25 +37,3 @@ resource "aws_route53_record" "bastion_public" {
   ttl     = "30"
   records = ["${var.bastion_ip}"]
 }
-
-resource "aws_route53_zone" "private" {
-  name = "${replace(var.master_private_dns_name, "/[^.]+\\.(.+)$/", "$1")}."
-  vpc_id = "${data.aws_vpc.platform.id}"
-
-  tags = "${map(
-    "kubernetes.io/cluster/${var.platform_name}", "owned"
-  )}"
-}
-
-resource "aws_route53_record" "master" {
-  zone_id = "${aws_route53_zone.private.zone_id}"
-  name = "${var.master_private_dns_name}"
-  type = "A"
-
-  alias {
-    name = "${data.aws_elb.master.dns_name}"
-    zone_id = "${data.aws_elb.master.zone_id}"
-    evaluate_target_health = false
-  }
-}
-

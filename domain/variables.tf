@@ -16,8 +16,3 @@ variable "master_public_dns_name" {
 }
 variable "master_public_lb_arn" {
 }
-
-variable "master_private_dns_name" {
-}
-variable "master_private_lb_name" {
-}

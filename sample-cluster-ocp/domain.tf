@@ -9,8 +9,6 @@ module "openshift_domain" {
   platform_default_subdomain = "${var.platform_default_subdomain}"
   platform_public_lb_arn = "${module.openshift_platform.platform_public_lb_arn}"
 
-  master_public_dns_name = "${var.master_public_dns_name}"
+  master_public_dns_name = "master.${var.platform_default_subdomain}"
   master_public_lb_arn = "${module.openshift_platform.master_public_lb_arn}"
-  master_private_dns_name = "${var.master_private_dns_name}"
-  master_private_lb_name = "${module.openshift_platform.master_lb_name}"
 }

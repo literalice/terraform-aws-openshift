@@ -39,7 +39,7 @@ OSEv3:
         - 'imagefs.available=1m30s'
         - 'imagefs.inodesFree=1m30s'
     openshift_disable_check: 'disk_availability,memory_availability'
-    openshift_master_cluster_hostname: ${master_private_dns_name}
+    openshift_master_cluster_hostname: master.${platform_name}.internal
     openshift_master_cluster_public_hostname: ${master_public_dns_name}
     openshift_master_default_subdomain: ${platform_default_subdomain}
     openshift_cloudprovider_kind: aws

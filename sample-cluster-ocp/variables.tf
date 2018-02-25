@@ -47,13 +47,3 @@ variable "rhn_password" {
 variable "platform_default_subdomain" {
   description = "Public DNS subdomain for access to services served in the cluster"
 }
-
-variable "master_public_dns_name" {
-  default = ""
-  description = "Public DNS name for access to the cluster control API(master)"
-}
-
-variable "master_private_dns_name" {
-  default = ""
-  description = "Private DNS name for internal access to the cluster control API (for HA access)"
-}

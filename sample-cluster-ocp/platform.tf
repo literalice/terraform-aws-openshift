@@ -10,8 +10,7 @@ module "openshift_platform" {
   operator_cidrs = ["${var.operator_cidrs}"]
   public_access_cidrs = ["${var.public_access_cidrs}"]
 
-  master_private_dns_name = "${var.master_private_dns_name}"
-  master_public_dns_name = "${var.master_public_dns_name}"
+  master_public_dns_name = "master.${var.platform_default_subdomain}"
   platform_default_subdomain = "${var.platform_default_subdomain}"
 
   infra_node_count = "${var.infra_node_count}"

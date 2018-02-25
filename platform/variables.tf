@@ -23,10 +23,6 @@ variable "master_public_dns_name" {
   default = ""
 }
 
-variable "master_private_dns_name" {
-  default = ""
-}
-
 variable "platform_default_subdomain" {
   default = ""
 }
