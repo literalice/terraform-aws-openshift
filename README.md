@@ -9,105 +9,61 @@ OpenShift origin will be supported in future.
 ## Prerequisites
 
 * You need to get access of Gold Images of Red Hat Atomic Host through the Red Hat Cloud Access program. See also https://access.redhat.com/articles/2962171
-* You need to have name servers for your cluster public domains.
-* You need to provision a certificate for wildcard domain of your default public subdomain (ex. `*.public-app.example.com`) in ACM.
 
-## Sample platform
+## Creates a cluster
 
-You can see usage of these modules in [the sample platform](/sample-cluster-ocp/)
-
-## OpenShift Network Module
-
-It sets up subnets and gateways for your OpenShift Cluster on AWS.
-
-### Parameters
-
-| Name | Info |
-|:-----|:-----|
-| platform_name | Cluster identifier |
-| zones | AZs where the cluster is deployed |
-| platform_cidr |      |
-| private_cidrs | Cidrs where the instances of the cluster is deployed |
-| public_cidrs| Cidrs where the public LB of the cluster is deployed |
-| operator_cidrs| Cidrs from which the cluster operators can access to the cluster master |
-| public_access_cidrs |      |
-
-### Example
-
-```terraform
-module "openshift_network" {
-  source = "../network"
-
-  platform_name = "foobar"
-  platform_cidr = "10.0.0.0/16"
-  private_cidrs = ["10.0.0.0/19", "10.0.32.0/19"]
-  operator_cidrs = ["", ""]
-  public_access_cidrs = ["0.0.0.0/0"]
-}
-```
-
-### OpenShift Platform Module
-
-It sets up instances(bastion, master, worker) and load balancers on AWS.
-
-#### Example
-
-```terraform
-module "openshift_platform" {
-  source = "../platform"
-
-  platform_name = "${var.platform_name}"
-  platform_vpc_id = "${module.openshift_network.platform_vpc_id}"
-  key_pair_public_key = "${var.key_pair_public_key}"
-  key_pair_private_key = "${file(var.key_pair_private_key_path)}"
-
-  public_subnet_ids = ["${module.openshift_network.public_subnet_ids}"]
-  private_subnet_ids = ["${module.openshift_network.private_subnet_ids}"]
-
-  operator_cidrs = ["${var.operator_cidrs}"]
-  public_access_cidrs = ["${var.public_access_cidrs}"]
-
-  rh_subscription_pool_id = "${var.rh_subscription_pool_id}"
-  rhn_username = "${var.rhn_username}"
-  rhn_password = "${var.rhn_password}"
-
-  master_dns_name = "${var.master_dns_name}"
-  master_public_dns_name = "${var.master_public_dns_name}"
-  platform_default_subdomain = "${var.platform_dns_name}"
-
-  infra_node_count = "${var.infra_node_count}"
-  master_count = "${var.master_count}"
-}
-```
-
-### OpenShift Domain Module
-
-It sets up domains for your cluster on AWS.
-
-#### Example
-
-```
-module "openshift_domain" {
-  source = "../domain"
-
-  platform_vpc_id = "${module.openshift_network.platform_vpc_id}"
-  platform_name = "${var.platform_name}"
-  platform_dns_name = "${var.platform_dns_name}"
-  platform_private_dns_name = "${var.platform_private_dns_name}"
-  bastion_ip = "${data.aws_instance.bastion.public_ip}"
-  master_public_dns_name = "${var.master_public_dns_name}"
-  master_public_lb_arn = "${module.openshift_platform.master_public_lb_arn}"
-  master_dns_name = "${var.master_dns_name}"
-  master_lb_name = "${module.openshift_platform.master_lb_name}"
-  platform_public_lb_arn = "${module.openshift_platform.platform_public_lb_arn}"
-}
-```
-
-### Sets up OpenShift Cluster
-
-After set up infrastructure, you need to run ansible installer on the bastion instances.
+You can set-up a sample cluster using [the sample platform](/sample-cluster-ocp/) project.
 
 ```bash
- $ ssh ec2-user@bastion.<your-cluster-public-domain>
- $ /etc/oc-install.sh
+# Use make command and input values requested in the interaction.
+make init
+make
+
+#
+# public_dns_nameservers = [
+#     ns-xxx.awsdns-xx.org,
+#     ns-xxx.awsdns-xx.co.uk,
+#     ns-xxx.awsdns-xx.com,
+#     ns-xxx.awsdns-xx.net
+# ]
+#
+
+# You need to set up the domain names for access the cluster.
+# You can set the name servers in output provided by the `make` command as NS record on your name server.
+# See also https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/CreatingNewSubdomain.html
+
+make install
+
+# You can access the master of the cluster.
+```
+
+### direnv
+Instead of inputing values in interaction, you can use [direnv](https://github.com/direnv/direnv) and .envrc file for providing configuration.
+
+```.envrc
+# AWS access
+export AWS_DEFAULT_REGION=ap-northeast-1
+export AWS_PROFILE=xxxx
+
+# Initialize backend for a building cluster's state
+export TF_CLI_ARGS_init="-backend-config='bucket=sample-platform-setting'"
+export TF_CLI_ARGS_init="$TF_CLI_ARGS_init -backend-config='key=state'"
+export TF_CLI_ARGS_init="$TF_CLI_ARGS_init -backend-config='region=${AWS_DEFAULT_REGION}'"
+
+# The name of the cluster that is used for tagging some resources
+export TF_VAR_platform_name=sample-platform
+
+# AWS key pair that is used for instances of the cluster includes the bastion
+export TF_VAR_key_pair_public_key_path="${HOME}/.ssh/sample-platform.pub"
+export TF_VAR_key_pair_private_key_path="${HOME}/.ssh/sample-platform"
+
+# Red Hat Network credential for registration system of the OpenShift Container Platform cluster
+export TF_VAR_rhn_username="xxx@example.com"
+export TF_VAR_rhn_password="xxxxxxxxxxx"
+
+# Red Hat subscription pool id for OpenShift Container Platform
+export TF_VAR_rh_subscription_pool_id="xxxxxxxx"
+
+# Public DNS subdomain for access to services served in the cluster
+export TF_VAR_platform_default_subdomain=sample-platform.example.com
 ```

@@ -2,6 +2,9 @@
 
 all: domain
 
+init:
+	@terraform init
+
 network:
 	@echo "Builds network for OpenShift"
 	@terraform apply -target module.openshift_network
