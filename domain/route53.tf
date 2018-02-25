@@ -1,5 +1,5 @@
 resource "aws_route53_zone" "public" {
-  name = "${var.platform_dns_name}."
+  name = "${var.platform_default_subdomain}."
 
   tags = "${map(
     "kubernetes.io/cluster/${var.platform_name}", "owned"
@@ -8,7 +8,7 @@ resource "aws_route53_zone" "public" {
 
 resource "aws_route53_record" "platform_public" {
   zone_id = "${aws_route53_zone.public.zone_id}"
-  name = "*.${var.platform_dns_name}"
+  name = "*.${var.platform_default_subdomain}"
   type = "A"
 
   alias {
@@ -32,14 +32,14 @@ resource "aws_route53_record" "master_public" {
 
 resource "aws_route53_record" "bastion_public" {
   zone_id = "${aws_route53_zone.public.zone_id}"
-  name = "bastion.${var.platform_dns_name}"
+  name = "bastion.${var.platform_default_subdomain}"
   type = "A"
   ttl     = "30"
   records = ["${var.bastion_ip}"]
 }
 
 resource "aws_route53_zone" "private" {
-  name = "${var.platform_private_dns_name}."
+  name = "${replace(var.master_private_dns_name, "/[^.]+\\.(.+)$/", "$1")}."
   vpc_id = "${data.aws_vpc.platform.id}"
 
   tags = "${map(
@@ -49,7 +49,7 @@ resource "aws_route53_zone" "private" {
 
 resource "aws_route53_record" "master" {
   zone_id = "${aws_route53_zone.private.zone_id}"
-  name = "${var.master_dns_name}"
+  name = "${var.master_private_dns_name}"
   type = "A"
 
   alias {

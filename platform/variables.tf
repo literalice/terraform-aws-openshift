@@ -19,6 +19,22 @@ variable "public_access_cidrs" {
   default = ["0.0.0.0/0"]
 }
 
+variable "master_public_dns_name" {
+  default = ""
+}
+
+variable "master_private_dns_name" {
+  default = ""
+}
+
+variable "platform_default_subdomain" {
+  default = ""
+}
+
+variable "platform_secure_listener" {
+  default = false
+}
+
 variable "key_pair_public_key" {}
 variable "key_pair_private_key" {}
 
@@ -30,19 +46,11 @@ variable "openshift_inventory" {
   default = ""
 }
 
-variable "master_dns_name" {
-  default = ""
-}
-variable "master_public_dns_name" {
-  default = ""
-}
-variable "platform_default_subdomain" {
-  default = ""
+variable "infra_node_count" {
+  default = 1
 }
 
-variable "infra_node_count" {
-  default = 2
-}
 variable "master_count" {
-  default = 3
+  default = 1
 }
+

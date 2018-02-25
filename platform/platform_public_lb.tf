@@ -31,11 +31,13 @@ resource "aws_lb_target_group" "platform_public_insecure" {
 }
 
 data "aws_acm_certificate" "platform_public" {
-  domain   = "*.${var.platform_default_subdomain}"
+  count = "${var.platform_secure_listener ? 1 : 0}"
+  domain = "*.${var.platform_default_subdomain}"
   statuses = ["ISSUED"]
 }
 
 resource "aws_lb_listener" "platform_public" {
+  count = "${data.aws_acm_certificate.platform_public.count}"
   load_balancer_arn = "${aws_lb.platform_public.arn}"
   port = "443"
   protocol = "HTTPS"

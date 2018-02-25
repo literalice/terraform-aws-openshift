@@ -1,5 +1,5 @@
 output "platform_vpc_id" {
-    value = "${aws_vpc.platform.id}"
+  value = "${aws_vpc.platform.id}"
 }
 
 output "public_subnet_ids" {
