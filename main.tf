@@ -16,5 +16,5 @@ resource "null_resource" "openshift" {
     bastion_instance_id = "${data.aws_instance.bastion.id}"
   }
 
-  depends_on = ["module.openshift_network", "module.openshift_platform", "module.openshift_domain"]
+  depends_on = ["module.network", "module.infrastructure", "module.domain"]
 }

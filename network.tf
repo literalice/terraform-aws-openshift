@@ -1,5 +1,5 @@
-module "openshift_network" {
-  source = "../network"
+module "network" {
+  source = "./modules/network"
 
   platform_name = "${var.platform_name}"
   operator_cidrs = "[${var.operator_cidrs}]"

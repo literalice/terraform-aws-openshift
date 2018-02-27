@@ -1,11 +1,11 @@
-module "openshift_platform" {
-  source = "../platform"
+module "infrastructure" {
+  source = "./modules/infrastructure"
 
   platform_name = "${var.platform_name}"
 
-  platform_vpc_id = "${module.openshift_network.platform_vpc_id}"
-  public_subnet_ids = ["${module.openshift_network.public_subnet_ids}"]
-  private_subnet_ids = ["${module.openshift_network.private_subnet_ids}"]
+  platform_vpc_id = "${module.network.platform_vpc_id}"
+  public_subnet_ids = ["${module.network.public_subnet_ids}"]
+  private_subnet_ids = ["${module.network.private_subnet_ids}"]
 
   operator_cidrs = ["${var.operator_cidrs}"]
   public_access_cidrs = ["${var.public_access_cidrs}"]
