@@ -1,10 +1,10 @@
-# OpenShift Terraform Module
+# Terraform OpenShift Container Platform Module
 
 Builds OpenShift Reference archtecture on AWS.
 
-Currently, It uses OCP(OpenShift Container Platform), not OpenShift origin.
+Currently, It uses OCP(OpenShift Container Platform), not OpenShift Origin.
 
-OpenShift origin will be supported in future.
+OpenShift Origin will be supported in future.
 
 ## Prerequisites
 
