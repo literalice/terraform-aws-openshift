@@ -9,7 +9,6 @@ data "template_file" "inventory_template" {
 }
 
 data "aws_region" "current" {
-  current = true
 }
 
 data "template_file" "installer_template" {

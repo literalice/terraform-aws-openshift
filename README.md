@@ -12,9 +12,11 @@ OpenShift origin will be supported in future.
 
 ## Creates a cluster
 
-You can set-up a sample cluster using [the sample platform](/sample-cluster-ocp/) project.
+You can set-up a cluster using [the example platform](/example/ocp/) project.
 
 ```bash
+cd ./example/ocp
+
 # Use make command and input values requested in the interaction.
 make init
 make
