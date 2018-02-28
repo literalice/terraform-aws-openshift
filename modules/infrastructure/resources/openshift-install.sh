@@ -1,4 +1,9 @@
 #!/bin/bash
+while ! type "ocinventory" > /dev/null 2>&1 || ! type "ansible-playbook" > /dev/null 2>&1 
+do 
+    echo -n "#" 
+    sleep 1 
+done
 
 export ANSIBLE_HOST_KEY_CHECKING=False
 export AWS_REGION="${platform_aws_region}"
