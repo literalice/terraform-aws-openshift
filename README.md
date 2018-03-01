@@ -1,6 +1,6 @@
 # Terraform OpenShift Container Platform Module
 
-Builds OpenShift Reference archtecture on AWS.
+Builds OpenShift reference archtecture on AWS.
 
 Currently, It uses OCP(OpenShift Container Platform), not OpenShift Origin.
 
@@ -33,11 +33,15 @@ make
 # You need to set up the domain names for access the cluster.
 # You can set the name servers in output provided by the `make` command as NS record on your name server.
 # See also https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/CreatingNewSubdomain.html
+#
+# After setting domains, you can install OpenShift on the infrastructure using `make install`.
 
 make install
 
 # You can access the master of the cluster.
 ```
+
+If you have some errors on running the above commands, please retry after a while.
 
 ### direnv
 Instead of inputing values in interaction, you can use [direnv](https://github.com/direnv/direnv) and .envrc file for providing configuration.
