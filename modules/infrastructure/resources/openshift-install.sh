@@ -1,4 +1,5 @@
 #!/bin/bash
+
 while ! type "ocinventory" > /dev/null 2>&1 || ! type "ansible-playbook" > /dev/null 2>&1 
 do 
     echo -n "#" 

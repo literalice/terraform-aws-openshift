@@ -1,4 +1,4 @@
-.PHONEY: all network platform domain install destroy
+.PHONEY: all network infrastructure domain install destroy
 
 all: domain
 
@@ -9,11 +9,11 @@ network:
 	@echo "Builds network for OpenShift"
 	@terraform apply -target module.openshift_platform.module.network
 
-platform: network
+infrastructure: network
 	@echo "Builds infrastructure for OpenShift"
 	@terraform apply -target module.openshift_platform.module.infrastructure
 
-domain: platform
+domain: infrastructure
 	@echo "Builds domain zone for OpenShift"
 	@terraform apply -target module.openshift_platform.module.domain
 
