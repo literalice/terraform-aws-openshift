@@ -50,6 +50,14 @@ variable "rhn_password" {
   default = ""
 }
 
+variable "openshift_major_version" {
+  default = "3.7"
+}
+
+variable "openshift_image_tag" {
+  default = "v3.7"
+}
+
 # Domains
 
 variable "platform_default_subdomain" {
