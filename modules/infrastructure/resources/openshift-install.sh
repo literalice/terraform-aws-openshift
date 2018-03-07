@@ -7,6 +7,10 @@ do
 done
 
 export ANSIBLE_HOST_KEY_CHECKING=False
+export ANSIBLE_FORKS=20
+export ANSIBLE_PIPELINING=True
+
 export AWS_REGION="${platform_aws_region}"
+
 ocinventory -cluster "${platform_name}" -inventory /etc/oc-inventory.yml > $HOME/inventory.yml
 ansible-playbook -i $HOME/inventory.yml /usr/share/ansible/openshift-ansible/playbooks/byo/config.yml
