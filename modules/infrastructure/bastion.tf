@@ -9,6 +9,7 @@ data "template_file" "bastion_init" {
       indent(6, data.template_file.inventory_template.rendered) :
       var.openshift_inventory}"
     openshift_install = "${indent(6, data.template_file.installer_template.rendered)}"
+    openshift_major_version = "${var.openshift_major_version}"
   }
 }
 

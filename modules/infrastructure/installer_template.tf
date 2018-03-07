@@ -7,6 +7,7 @@ data "template_file" "inventory_template" {
     master_public_dns_name = "${var.master_public_dns_name}"
     platform_default_subdomain = "${var.platform_default_subdomain}"
     openshift_deployment_type = "${(var.upstream) ? "origin" : "openshift-enterprise"}"
+    openshift_major_version = "${var.openshift_major_version}"
   }
 }
 
