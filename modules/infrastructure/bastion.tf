@@ -1,5 +1,5 @@
 data "template_file" "bastion_init" {
-  template = "${file("${path.module}/resources/bastion-init.yml")}"
+  template = "${(var.upstream) ? file("${path.module}/resources/origin-bastion-init.yml") : file("${path.module}/resources/bastion-init.yml")}"
 
   vars {
     rhn_username = "${var.rhn_username}"
@@ -41,7 +41,7 @@ resource "aws_instance" "bastion" {
 
     connection {
       type = "ssh"
-      user = "ec2-user"
+      user = "${(var.upstream) ? "centos" : "ec2-user"}"
       private_key = "${var.key_pair_private_key}"
     }
   }
@@ -61,7 +61,7 @@ resource "null_resource" "openshift_platform_key" {
 
   connection {
     type = "ssh"
-    user = "ec2-user"
+    user = "${(var.upstream) ? "centos" : "ec2-user"}"
     private_key = "${var.key_pair_private_key}"
     host = "${aws_instance.bastion.public_ip}"
   }

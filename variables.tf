@@ -30,16 +30,24 @@ variable "master_count" {
   default = 1
 }
 
+variable "upstream" {
+  description = "Sets true if you want to install Origin."
+  default = false
+}
+
 variable "rh_subscription_pool_id" {
   description = "Red Hat subscription pool id for OpenShift Container Platform"
+  default = ""
 }
 
 variable "rhn_username" {
   description = "Red Hat Network login username for registration system of the OpenShift Container Platform cluster"
+  default = ""
 }
 
 variable "rhn_password" {
   description = "Red Hat Network login password for registration system of the OpenShift Container Platform cluster"
+  default = ""
 }
 
 # Domains

@@ -1,10 +1,10 @@
 data "aws_ami" "bastion" {
-    owners      = ["309956199498"]
+    owners = ["${(var.upstream) ? "679593333241" : "309956199498"}"]
     most_recent = true
 
     filter {
         name   = "name"
-        values = ["RHEL-7.4_HVM_GA-????????-x86_64-*-Access2-*"]
+        values = ["${(var.upstream) ? "CentOS Linux 7 x86_64 HVM EBS *" : "RHEL-7.4_HVM_GA-????????-x86_64-*-Access2-*"}"]
     }
 
     filter {
@@ -19,12 +19,12 @@ data "aws_ami" "bastion" {
 }
 
 data "aws_ami" "node" {
-    owners      = ["309956199498"]
+    owners      = ["${(var.upstream) ? "679593333241" : "309956199498"}"]
     most_recent = true
 
     filter {
         name   = "name"
-        values = ["RHEL-Atomic_7.4_HVM_GA-????????-x86_64-*"]
+        values = ["${(var.upstream) ? "CentOS Linux 7 x86_64 HVM EBS *" : "RHEL-Atomic_7.4_HVM_GA-????????-x86_64-*"}"]
     }
 
     filter {
@@ -35,5 +35,10 @@ data "aws_ami" "node" {
     filter {
         name   = "root-device-type"
         values = ["ebs"]
+    }
+
+    filter {
+        name   = "virtualization-type"
+        values = ["hvm"]
     }
 }

@@ -34,6 +34,10 @@ variable "platform_secure_listener" {
 variable "key_pair_public_key" {}
 variable "key_pair_private_key" {}
 
+variable "upstream" {
+  default = true
+}
+
 variable "rhn_username" {}
 variable "rhn_password" {}
 variable "rh_subscription_pool_id" {}

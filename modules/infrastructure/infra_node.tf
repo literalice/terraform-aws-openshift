@@ -1,5 +1,5 @@
 data "template_file" "node_init" {
-  template = "${file("${path.module}/resources/node-init.yml")}"
+  template = "${(var.upstream) ? file("${path.module}/resources/origin-node-init.yml") : file("${path.module}/resources/node-init.yml")}"
 
   vars {
     rhn_username = "${var.rhn_username}"

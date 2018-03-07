@@ -7,9 +7,10 @@ OSEv3:
     nodes:
       hosts:
   vars:
-    ansible_user: cloud-user
+    ansible_user: ${ansible_user}
     ansible_become: true
-    openshift_deployment_type: openshift-enterprise
+    openshift_deployment_type: ${openshift_deployment_type}
+    openshift_release: "v3.7"
     containerized: true
     openshift_master_identity_providers:
       - name: 'test_identity_provider'

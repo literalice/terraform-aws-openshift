@@ -19,6 +19,7 @@ module "infrastructure" {
   key_pair_public_key = "${file(var.key_pair_public_key_path)}"
   key_pair_private_key = "${file(var.key_pair_private_key_path)}"
 
+  upstream = "${var.upstream}"
   rh_subscription_pool_id = "${var.rh_subscription_pool_id}"
   rhn_username = "${var.rhn_username}"
   rhn_password = "${var.rhn_password}"

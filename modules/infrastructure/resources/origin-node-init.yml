@@ -1,0 +1,13 @@
+#cloud-config
+write_files:
+  - path: /etc/sysconfig/docker-storage-setup
+    permissions: 0644
+    owner: root
+    content: |
+        STORAGE_DRIVER=overlay2
+runcmd:
+ - yum -y install docker-1.12.6 python-rhsm-certificates NetworkManager
+ - systemctl enable docker
+ - systemctl start docker
+ - systemctl enable NetworkManager
+ - systemctl start NetworkManager
