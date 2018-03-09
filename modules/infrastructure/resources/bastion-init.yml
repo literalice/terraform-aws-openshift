@@ -22,7 +22,5 @@ runcmd:
  - yum-config-manager --disable \*
  - subscription-manager repos --enable="rhel-7-server-rpms" --enable="rhel-7-server-extras-rpms" --enable="rhel-7-server-ose-${openshift_major_version}-rpms" --enable="rhel-7-fast-datapath-rpms"
  - yum -y install atomic-openshift-utils atomic-openshift-clients
- - curl https://amazon-ssm-ap-northeast-1.s3.amazonaws.com/latest/linux_amd64/amazon-ssm-agent.rpm -o amazon-ssm-agent.rpm
- - yum install -y amazon-ssm-agent.rpm
  - curl -L -o /usr/local/bin/ocinventory https://github.com/literalice/openshift-inventory-utils/releases/download/v0.1/ocinventory_unix
  - chmod +x /usr/local/bin/ocinventory

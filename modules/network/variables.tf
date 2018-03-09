@@ -1,10 +1,5 @@
 variable "platform_name" {}
 
-variable "zones" {
-  type = "list"
-  default = ["ap-northeast-1a", "ap-northeast-1c"]
-}
-
 variable "platform_cidr" {
   default = "10.0.0.0/16"
 }
@@ -28,3 +23,5 @@ variable "public_access_cidrs" {
   type = "list"
   default = ["0.0.0.0/0"]
 }
+
+data "aws_availability_zones" "available" {}

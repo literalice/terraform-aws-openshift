@@ -15,12 +15,11 @@ write_files:
 runcmd:
  - yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
  - sed -i -e "s/^enabled=1/enabled=0/" /etc/yum.repos.d/epel.repo
- - yum -y install wget git net-tools bind-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct amazon-ssm-agent.rpm
+ - yum -y install wget git net-tools bind-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct
  - yum -y --enablerepo=epel install ansible pyOpenSSL
  - yum update
  - git clone https://github.com/openshift/openshift-ansible
  - mv openshift-ansible /usr/share/ansible/
  - cd /usr/share/ansible/openshift-ansible && git checkout -b release-${openshift_major_version} origin/release-${openshift_major_version}
- - curl https://amazon-ssm-ap-northeast-1.s3.amazonaws.com/latest/linux_amd64/amazon-ssm-agent.rpm -o amazon-ssm-agent.rpm
  - curl -L -o /usr/local/bin/ocinventory https://github.com/literalice/openshift-inventory-utils/releases/download/v0.1/ocinventory_unix
  - chmod +x /usr/local/bin/ocinventory
