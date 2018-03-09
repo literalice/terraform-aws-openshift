@@ -1,4 +1,5 @@
+**/backend.tf
 .terraform/
 *.tfstate
-*.tfstate.*.backup
+*.tfstate.*
 .envrc

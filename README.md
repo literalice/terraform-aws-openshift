@@ -81,11 +81,6 @@ Instead of inputing values in interaction, you can use [direnv](https://github.c
 export AWS_DEFAULT_REGION=ap-northeast-1
 export AWS_PROFILE=xxxx
 
-# Initialize backend for a building cluster's state
-export TF_CLI_ARGS_init="-backend-config='bucket=sample-platform-setting'"
-export TF_CLI_ARGS_init="$TF_CLI_ARGS_init -backend-config='key=state'"
-export TF_CLI_ARGS_init="$TF_CLI_ARGS_init -backend-config='region=${AWS_DEFAULT_REGION}'"
-
 # The name of the cluster that is used for tagging some resources
 export TF_VAR_platform_name=sample-platform
 
