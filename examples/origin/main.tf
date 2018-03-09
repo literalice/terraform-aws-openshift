@@ -10,4 +10,5 @@ module "openshift_platform" {
   infra_node_count = "${var.infra_node_count}"
   master_count = "${var.master_count}"
   platform_default_subdomain = "${var.platform_default_subdomain}"
+  openshift_image_tag =  "v3.7.1"
 }

@@ -38,6 +38,10 @@ variable "openshift_major_version" {
   default = "3.7"
 }
 
+variable "openshift_image_tag" {
+  default = "v3.7"
+}
+
 variable "upstream" {
   default = true
 }

@@ -20,6 +20,8 @@ module "infrastructure" {
   key_pair_private_key = "${file(var.key_pair_private_key_path)}"
 
   upstream = "${var.upstream}"
+  openshift_major_version = "${var.openshift_major_version}"
+  openshift_image_tag = "${var.openshift_image_tag}"
   rh_subscription_pool_id = "${var.rh_subscription_pool_id}"
   rhn_username = "${var.rhn_username}"
   rhn_password = "${var.rhn_password}"
