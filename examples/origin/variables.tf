@@ -25,5 +25,9 @@ variable "master_count" {
   default = 1
 }
 
+variable "master_spot_price" {
+  default = ""
+}
+
 variable "platform_default_subdomain" {
 }

@@ -15,6 +15,7 @@ module "infrastructure" {
 
   infra_node_count = "${var.infra_node_count}"
   master_count = "${var.master_count}"
+  master_spot_price = "${var.master_spot_price}"
 
   key_pair_public_key = "${file(var.key_pair_public_key_path)}"
   key_pair_private_key = "${file(var.key_pair_private_key_path)}"

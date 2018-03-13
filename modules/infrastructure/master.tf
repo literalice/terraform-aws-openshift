@@ -14,6 +14,7 @@ resource "aws_launch_configuration" "master" {
   key_name = "${aws_key_pair.platform.id}"
   user_data = "${data.template_file.node_init.rendered}"
   iam_instance_profile = "${aws_iam_instance_profile.master.name}"
+  spot_price = "${var.upstream ? var.master_spot_price : ""}"
 
   lifecycle {
     create_before_destroy = true

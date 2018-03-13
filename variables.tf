@@ -30,6 +30,10 @@ variable "master_count" {
   default = 1
 }
 
+variable "master_spot_price" {
+  default = "0.05"
+}
+
 variable "upstream" {
   description = "Sets true if you want to install Origin."
   default = false
