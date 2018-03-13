@@ -8,7 +8,7 @@ resource "null_resource" "openshift" {
   connection {
     type = "ssh"
     user = "${(var.upstream) ? "centos" : "ec2-user"}"
-    private_key = "${file(var.key_pair_private_key_path)}"
+    private_key = "${module.infrastructure.platform_private_key}"
     host = "${data.aws_instance.bastion.public_ip}"
   }
 

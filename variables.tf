@@ -2,10 +2,6 @@ variable "platform_name" {
   description = "The name of the cluster that is used for tagging some resources"
 }
 
-variable "key_pair_public_key_path" {
-  description = "AWS key pair that is used for instances of the cluster includes the bastion"
-}
-
 variable "key_pair_private_key_path" {
   description = "AWS key pair that is used for instances of the cluster includes the bastion"
 }

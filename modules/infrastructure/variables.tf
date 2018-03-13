@@ -31,8 +31,9 @@ variable "platform_secure_listener" {
   default = false
 }
 
-variable "key_pair_public_key" {}
-variable "key_pair_private_key" {}
+variable "key_pair_private_key" {
+  default = ""
+}
 
 variable "openshift_major_version" {
   default = "3.7"

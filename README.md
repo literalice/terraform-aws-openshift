@@ -85,7 +85,6 @@ export AWS_PROFILE=xxxx
 export TF_VAR_platform_name=sample-platform
 
 # AWS key pair that is used for instances of the cluster includes the bastion
-export TF_VAR_key_pair_public_key_path="${HOME}/.ssh/sample-platform.pub"
 export TF_VAR_key_pair_private_key_path="${HOME}/.ssh/sample-platform"
 
 # Red Hat Network credential for registration system of the OpenShift Container Platform cluster
