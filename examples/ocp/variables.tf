@@ -1,10 +1,8 @@
 variable "platform_name" {
 }
 
-variable "key_pair_public_key_path" {
-}
-
 variable "key_pair_private_key_path" {
+  default = ""
 }
 
 variable "operator_cidrs" {

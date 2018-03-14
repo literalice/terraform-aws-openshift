@@ -23,5 +23,6 @@ output "master_private_dns_name" {
 }
 
 output "platform_private_key" {
-    value = "${data.tls_public_key.platform.private_key_pem}"
+  sensitive = true
+  value = "${data.tls_public_key.platform.private_key_pem}"
 }

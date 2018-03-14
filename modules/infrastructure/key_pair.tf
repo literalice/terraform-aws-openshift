@@ -1,7 +1,6 @@
 resource "tls_private_key" "tmp" {
-  # count = "${var.key_pair_private_key == "" ? 1 : 0}"
-  algorithm = "ECDSA"
-  ecdsa_curve = "P384"
+  algorithm = "RSA"
+  rsa_bits = "4096"
 }
 
 data "tls_public_key" "platform" {

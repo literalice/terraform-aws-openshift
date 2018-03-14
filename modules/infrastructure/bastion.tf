@@ -35,22 +35,11 @@ resource "aws_instance" "bastion" {
     "Name", "${var.platform_name}-bastion",
     "Role", "bastion"
   )}"
-
-  provisioner "file" {
-    content = "${var.key_pair_private_key}"
-    destination = "~/.ssh/id_rsa"
-
-    connection {
-      type = "ssh"
-      user = "${(var.upstream) ? "centos" : "ec2-user"}"
-      private_key = "${var.key_pair_private_key}"
-    }
-  }
 }
 
 resource "null_resource" "openshift_platform_key" {
   provisioner "file" {
-    content = "${var.key_pair_private_key}"
+    content = "${data.tls_public_key.platform.private_key_pem}"
     destination = "~/.ssh/id_rsa"
   }
 

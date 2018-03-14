@@ -17,7 +17,7 @@ module "infrastructure" {
   master_count = "${var.master_count}"
   master_spot_price = "${var.master_spot_price}"
 
-  key_pair_private_key = "${file(var.key_pair_private_key_path)}"
+  key_pair_private_key = "${file(var.key_pair_private_key_path == "" ? "${path.module}/empty.txt" : var.key_pair_private_key_path)}"
 
   upstream = "${var.upstream}"
   openshift_major_version = "${var.openshift_major_version}"
