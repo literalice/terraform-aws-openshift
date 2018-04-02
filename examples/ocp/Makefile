@@ -20,6 +20,14 @@ domain: infrastructure
 install:
 	@terraform apply
 
+destroy-network:
+	@echo "Destroy platform network resources ..."
+	@terraform destroy -target module.openshift_platform.module.network
+
+destroy-infrastructure:
+	@echo "Destroy platform infrastructure resources ..."
+	@terraform destroy -target module.openshift_platform.module.infrastructure
+
 destroy:
 	@echo "Destroy domain settings ..."
 	@terraform destroy -target module.openshift_platform.module.domain

@@ -20,7 +20,7 @@ rh_subscription:
 runcmd:
  - subscription-manager repos --disable="*"
  - yum-config-manager --disable \*
- - subscription-manager repos --enable="rhel-7-server-rpms" --enable="rhel-7-server-extras-rpms" --enable="rhel-7-server-ose-${openshift_major_version}-rpms" --enable="rhel-7-fast-datapath-rpms"
+ - subscription-manager repos --enable="rhel-7-server-rpms" --enable="rhel-7-server-extras-rpms" --enable="rhel-7-server-ose-${openshift_major_version}-rpms" --enable="rhel-7-fast-datapath-rpms" --enable="rhel-7-server-ansible-2.4-rpms"
  - yum -y install atomic-openshift-utils atomic-openshift-clients
  - curl -L -o /usr/local/bin/ocinventory https://github.com/literalice/openshift-inventory-utils/releases/download/v0.1/ocinventory_unix
  - chmod +x /usr/local/bin/ocinventory

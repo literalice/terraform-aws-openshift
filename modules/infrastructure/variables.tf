@@ -15,7 +15,7 @@ variable "operator_cidrs" {
 }
 
 variable "public_access_cidrs" {
-  type = "list"
+  type    = "list"
   default = ["0.0.0.0/0"]
 }
 
@@ -36,11 +36,11 @@ variable "key_pair_private_key" {
 }
 
 variable "openshift_major_version" {
-  default = "3.7"
+  default = "3.9"
 }
 
 variable "openshift_image_tag" {
-  default = "v3.7"
+  default = "v3.9"
 }
 
 variable "upstream" {

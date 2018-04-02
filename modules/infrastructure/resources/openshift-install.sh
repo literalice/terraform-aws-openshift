@@ -13,4 +13,5 @@ export ANSIBLE_FORKS=20
 export AWS_REGION="${platform_aws_region}"
 
 ocinventory -cluster "${platform_name}" -inventory /etc/oc-inventory.yml > $HOME/inventory.yml
-ansible-playbook -i $HOME/inventory.yml /usr/share/ansible/openshift-ansible/playbooks/byo/config.yml
+ansible-playbook -i $HOME/inventory.yml /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
+ansible-playbook -i $HOME/inventory.yml /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml

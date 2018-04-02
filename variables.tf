@@ -7,14 +7,14 @@ variable "key_pair_private_key_path" {
 }
 
 variable "operator_cidrs" {
-  type = "list"
-  default = ["0.0.0.0/0"]
+  type        = "list"
+  default     = ["0.0.0.0/0"]
   description = "CIDRS that is allowed from which master api can be accessed"
 }
 
 variable "public_access_cidrs" {
-  type = "list"
-  default = ["0.0.0.0/0"]
+  type        = "list"
+  default     = ["0.0.0.0/0"]
   description = "CIDRS that is allowed from which public users can access served services in the cluster"
 }
 
@@ -32,30 +32,30 @@ variable "master_spot_price" {
 
 variable "upstream" {
   description = "Sets true if you want to install Origin."
-  default = false
+  default     = false
 }
 
 variable "rh_subscription_pool_id" {
   description = "Red Hat subscription pool id for OpenShift Container Platform"
-  default = ""
+  default     = ""
 }
 
 variable "rhn_username" {
   description = "Red Hat Network login username for registration system of the OpenShift Container Platform cluster"
-  default = ""
+  default     = ""
 }
 
 variable "rhn_password" {
   description = "Red Hat Network login password for registration system of the OpenShift Container Platform cluster"
-  default = ""
+  default     = ""
 }
 
 variable "openshift_major_version" {
-  default = "3.7"
+  default = "3.9"
 }
 
 variable "openshift_image_tag" {
-  default = "v3.7"
+  default = "v3.9"
 }
 
 # Domains
