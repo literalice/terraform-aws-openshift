@@ -46,9 +46,3 @@ OSEv3:
     openshift_master_default_subdomain: ${platform_default_subdomain}
     openshift_cloudprovider_kind: aws
     openshift_clusterid: ${platform_name}
-    # openshift_hosted_prometheus_deploy: true
-    # openshift_prometheus_namespace: openshift-metrics
-    # openshift_prometheus_node_selector:
-    #   region: infra
-    # openshift_web_console_nodeselector:
-    #   region: infra

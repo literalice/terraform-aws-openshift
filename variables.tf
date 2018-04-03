@@ -18,8 +18,12 @@ variable "public_access_cidrs" {
   description = "CIDRS that is allowed from which public users can access served services in the cluster"
 }
 
-variable "infra_node_count" {
+variable "compute_node_count" {
   default = 2
+}
+
+variable "infra_node_count" {
+  default = 1
 }
 
 variable "master_count" {

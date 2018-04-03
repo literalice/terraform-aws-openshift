@@ -29,6 +29,24 @@ resource "aws_launch_configuration" "master" {
   }
 }
 
+locals {
+  master_target_group_arns = [
+    "${aws_lb_target_group.master_public.arn}",
+    "${aws_lb_target_group.master_public_insecure.arn}",
+  ]
+
+  master_infra_target_group_arns = [
+    "${aws_lb_target_group.master_public.arn}",
+    "${aws_lb_target_group.master_public_insecure.arn}",
+    "${aws_lb_target_group.platform_public_insecure.arn}",
+  ]
+
+  # https://github.com/hashicorp/terraform/issues/12453
+  master_target_groups = [
+    "${split(",", var.infra_node_count > 0 ? join(",", local.master_target_group_arns) : join(",", local.master_infra_target_group_arns))}",
+  ]
+}
+
 resource "aws_autoscaling_group" "master" {
   vpc_zone_identifier       = ["${data.aws_subnet.private.*.id}"]
   name                      = "${var.platform_name}-master"
@@ -39,8 +57,10 @@ resource "aws_autoscaling_group" "master" {
   health_check_grace_period = 300
   force_delete              = true
   launch_configuration      = "${aws_launch_configuration.master.name}"
-  target_group_arns         = ["${aws_lb_target_group.master_public.arn}", "${aws_lb_target_group.master_public_insecure.arn}"]
-  load_balancers            = ["${aws_elb.master.name}"]
+
+  target_group_arns = ["${local.master_target_groups}"]
+
+  load_balancers = ["${aws_elb.master.name}"]
 
   tag {
     key                 = "kubernetes.io/cluster/${var.platform_name}"
@@ -62,7 +82,7 @@ resource "aws_autoscaling_group" "master" {
 
   tag {
     key                 = "openshift_node_labels_region"
-    value               = "infra"
+    value               = "${var.infra_node_count > 0 ? "master" : "infra"}"
     propagate_at_launch = true
   }
 

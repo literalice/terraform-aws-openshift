@@ -55,6 +55,10 @@ variable "openshift_inventory" {
   default = ""
 }
 
+variable "compute_node_count" {
+  default = 2
+}
+
 variable "infra_node_count" {
   default = 1
 }

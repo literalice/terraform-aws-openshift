@@ -14,6 +14,10 @@ variable "public_access_cidrs" {
   default = ["0.0.0.0/0"]
 }
 
+variable "compute_node_count" {
+  default = 2
+}
+
 variable "infra_node_count" {
   default = 1
 }
