@@ -17,6 +17,7 @@ runcmd:
  - sed -i -e "s/^enabled=1/enabled=0/" /etc/yum.repos.d/epel.repo
  - yum -y install wget git net-tools bind-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct
  - yum -y --enablerepo=epel install ansible pyOpenSSL
+ - rpm -Uvh https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.4.3.0-1.el7.ans.noarch.rpm
  - yum update
  - git clone https://github.com/openshift/openshift-ansible
  - mv openshift-ansible /usr/share/ansible/
