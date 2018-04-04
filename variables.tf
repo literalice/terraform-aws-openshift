@@ -58,10 +58,6 @@ variable "openshift_major_version" {
   default = "3.9"
 }
 
-variable "openshift_image_tag" {
-  default = "v3.9"
-}
-
 # Domains
 
 variable "platform_default_subdomain" {

@@ -11,5 +11,4 @@ module "openshift_platform" {
   master_count               = "${var.master_count}"
   master_spot_price          = "${var.master_spot_price}"
   platform_default_subdomain = "${var.platform_default_subdomain}"
-  openshift_image_tag        = "v3.9.0"
 }
