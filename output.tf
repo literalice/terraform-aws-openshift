@@ -4,7 +4,7 @@ output "master_url" {
 }
 
 output "bastion_ssh" {
-  value       = "${module.infrastructure.bastion_ssh_user}@${data.aws_instance.bastion.public_dns}"
+  value       = "${module.infrastructure.bastion_ssh_user}@${module.infrastructure.bastion_public_dns}"
   description = "Bastion SSH info for login. 'ssh `terraform output bastion_ssh`'"
 }
 
