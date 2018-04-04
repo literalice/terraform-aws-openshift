@@ -11,6 +11,7 @@ resource "aws_launch_configuration" "infra_node" {
   security_groups = [
     "${aws_security_group.node.id}",
     "${aws_security_group.infra_node.id}",
+    "${aws_security_group.platform_public.id}",
   ]
 
   key_name             = "${aws_key_pair.platform.id}"

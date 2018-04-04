@@ -39,6 +39,7 @@ locals {
     "${aws_lb_target_group.master_public.arn}",
     "${aws_lb_target_group.master_public_insecure.arn}",
     "${aws_lb_target_group.platform_public_insecure.arn}",
+    "${aws_lb_target_group.platform_public.arn}",
   ]
 
   # https://github.com/hashicorp/terraform/issues/12453
