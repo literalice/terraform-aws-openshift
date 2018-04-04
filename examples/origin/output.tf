@@ -13,6 +13,16 @@ output "bastion_public_dns" {
   description = "Bastion domain name"
 }
 
+output "master_public_lb_addrs" {
+  value       = "${module.openshift_platform.master_public_lb_addrs}"
+  description = "Master LB's static IPs"
+}
+
+output "platform_public_lb_addrs" {
+  value       = "${module.openshift_platform.platform_public_lb_addrs}"
+  description = "Platform LB's static IPs"
+}
+
 output "public_dns_nameservers" {
   value       = "${module.openshift_platform.public_dns_nameservers}"
   description = "List of nameservers for delegation. Please set the nameservers in the parent hosted zone."

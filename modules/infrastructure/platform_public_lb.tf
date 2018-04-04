@@ -1,10 +1,11 @@
 # Endpoint for Internet access
 
 resource "aws_lb" "platform_public" {
-  name               = "${var.platform_name}-public-lb"
-  internal           = false
-  subnets            = ["${data.aws_subnet.public.*.id}"]
-  load_balancer_type = "network"
+  name                             = "${var.platform_name}-public-lb"
+  internal                         = false
+  subnets                          = ["${data.aws_subnet.public.*.id}"]
+  load_balancer_type               = "network"
+  enable_cross_zone_load_balancing = true
 
   tags = "${map(
     "kubernetes.io/cluster/${var.platform_name}", "owned"
@@ -47,4 +48,8 @@ resource "aws_lb_target_group" "platform_public" {
   protocol             = "TCP"
   deregistration_delay = 20
   vpc_id               = "${data.aws_vpc.platform.id}"
+}
+
+data "dns_a_record_set" "platform_public_lb" {
+  host = "${aws_lb.platform_public.dns_name}"
 }

@@ -1,5 +1,5 @@
-provider "aws" {
-}
+provider "aws" {}
 
-provider "null" {
-}
+provider "null" {}
+
+provider "dns" {}

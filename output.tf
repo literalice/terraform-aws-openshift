@@ -8,6 +8,16 @@ output "bastion_ssh" {
   description = "Bastion SSH info for login. 'ssh `terraform output bastion_ssh`'"
 }
 
+output "master_public_lb_addrs" {
+  value       = "${module.infrastructure.master_public_lb_addrs}"
+  description = "Master LB's static IPs"
+}
+
+output "platform_public_lb_addrs" {
+  value       = "${module.infrastructure.platform_public_lb_addrs}"
+  description = "Platform LB's static IPs"
+}
+
 output "bastion_public_dns" {
   value       = "${module.domain.bastion_public_dns}"
   description = "Bastion domain name"

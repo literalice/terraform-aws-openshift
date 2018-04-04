@@ -34,3 +34,11 @@ output "platform_private_key" {
   sensitive = true
   value     = "${data.tls_public_key.platform.private_key_pem}"
 }
+
+output "master_public_lb_addrs" {
+  value = "${data.dns_a_record_set.master_public_lb.addrs}"
+}
+
+output "platform_public_lb_addrs" {
+  value = "${data.dns_a_record_set.platform_public_lb.addrs}"
+}
