@@ -3,9 +3,9 @@ output "master_url" {
   description = "OpenShift master(console) domain name"
 }
 
-output "bastion_dns" {
-  value       = "${data.aws_instance.bastion.public_dns}"
-  description = "Bastion domain name of EC2"
+output "bastion_ssh" {
+  value       = "${module.infrastructure.bastion_ssh_user}@${data.aws_instance.bastion.public_dns}"
+  description = "Bastion SSH info for login. 'ssh `terraform output bastion_ssh`'"
 }
 
 output "bastion_public_dns" {

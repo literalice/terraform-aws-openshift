@@ -97,3 +97,19 @@ export TF_VAR_rh_subscription_pool_id="xxxxxxxx"
 # Public DNS subdomain for access to services served in the cluster
 export TF_VAR_platform_default_subdomain=sample-platform.example.com
 ```
+
+## Tips
+
+### Open OpenShift Web Console
+
+```bash
+open `terraform output master_dns`
+```
+
+### SSH to Bastion
+
+```
+terraform output platform_private_key > .platform_private_key
+chmod 600 ./.platform_private_key
+ssh `terraform output bastion_ssh` -i ./.platform_private_key
+```

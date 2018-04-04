@@ -2,6 +2,10 @@ output "bastion_instance_id" {
   value = "${aws_instance.bastion.id}"
 }
 
+output "bastion_ssh_user" {
+  value = "${local.bastion_ssh_user}"
+}
+
 output "platform_public_lb_arn" {
   value = "${aws_lb.platform_public.arn}"
 }
@@ -24,5 +28,5 @@ output "master_private_dns_name" {
 
 output "platform_private_key" {
   sensitive = true
-  value = "${data.tls_public_key.platform.private_key_pem}"
+  value     = "${data.tls_public_key.platform.private_key_pem}"
 }
