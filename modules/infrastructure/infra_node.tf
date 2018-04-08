@@ -43,6 +43,7 @@ resource "aws_autoscaling_group" "infra_node" {
 
   target_group_arns = [
     "${aws_lb_target_group.platform_public_insecure.arn}",
+    "${aws_lb_target_group.platform_public.arn}",
   ]
 
   tag {

@@ -39,6 +39,11 @@ variable "openshift_major_version" {
   default = "3.9"
 }
 
+variable "openshift_cluster_admin_users" {
+  type    = "list"
+  default = ["admin"]
+}
+
 variable "upstream" {
   default = true
 }

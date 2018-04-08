@@ -12,6 +12,7 @@ OSEv3:
     openshift_deployment_type: ${openshift_deployment_type}
     openshift_release: "v${openshift_major_version}"
     openshift_repos_enable_testing: ${openshift_repos_enable_testing}
+    openshift_cluster_admin_users: ${openshift_cluster_admin_users}
     containerized: true
     openshift_master_identity_providers:
       - name: 'test_identity_provider'

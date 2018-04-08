@@ -1,5 +1,5 @@
 data "template_file" "inventory_template" {
-  template = "${file("${path.module}/resources/openshift-inventory.yml")}"
+  template = "${file("${path.module}/resources/template-inventory.yml")}"
 
   vars {
     platform_name                  = "${var.platform_name}"
@@ -9,6 +9,7 @@ data "template_file" "inventory_template" {
     openshift_deployment_type      = "${(var.upstream) ? "origin" : "openshift-enterprise"}"
     openshift_major_version        = "${var.openshift_major_version}"
     openshift_repos_enable_testing = "${(var.upstream) ? "true" : "false"}"
+    openshift_cluster_admin_users  = "[${join(",", formatlist("\"%s\"", var.openshift_cluster_admin_users))}]"
   }
 }
 

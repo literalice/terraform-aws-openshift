@@ -6,11 +6,6 @@ data "template_file" "bastion_init" {
     rhn_password            = "${var.rhn_password}"
     rh_subscription_pool_id = "${var.rh_subscription_pool_id}"
 
-    openshift_inventory = "${var.openshift_inventory == "" ?
-      indent(6, data.template_file.inventory_template.rendered) :
-      var.openshift_inventory}"
-
-    openshift_install       = "${indent(6, data.template_file.installer_template.rendered)}"
     openshift_major_version = "${var.openshift_major_version}"
   }
 }
@@ -52,6 +47,79 @@ resource "null_resource" "openshift_platform_key" {
   provisioner "remote-exec" {
     inline = [
       "chmod 600 ~/.ssh/id_rsa",
+    ]
+  }
+
+  connection {
+    type        = "ssh"
+    user        = "${local.bastion_ssh_user}"
+    private_key = "${data.tls_public_key.platform.private_key_pem}"
+    host        = "${aws_instance.bastion.public_ip}"
+  }
+
+  triggers = {
+    bastion_instance_id = "${aws_instance.bastion.id}"
+  }
+
+  depends_on = ["aws_instance.bastion"]
+}
+
+resource "null_resource" "openshift_additional_playbooks" {
+  provisioner "file" {
+    source      = "${path.module}/resources/playbooks"
+    destination = "~"
+  }
+
+  connection {
+    type        = "ssh"
+    user        = "${local.bastion_ssh_user}"
+    private_key = "${data.tls_public_key.platform.private_key_pem}"
+    host        = "${aws_instance.bastion.public_ip}"
+  }
+
+  triggers = {
+    bastion_instance_id = "${aws_instance.bastion.id}"
+  }
+
+  depends_on = ["aws_instance.bastion"]
+}
+
+locals {
+  openshift_template_inventory = "${var.openshift_inventory == "" ? data.template_file.inventory_template.rendered : var.openshift_inventory}"
+}
+
+resource "null_resource" "openshift_installer" {
+  provisioner "file" {
+    content     = "${local.openshift_template_inventory}"
+    destination = "~/template-inventory.yml"
+  }
+
+  provisioner "file" {
+    content     = "${data.template_file.installer_template.rendered}"
+    destination = "~/oc-install.sh"
+  }
+
+  connection {
+    type        = "ssh"
+    user        = "${local.bastion_ssh_user}"
+    private_key = "${data.tls_public_key.platform.private_key_pem}"
+    host        = "${aws_instance.bastion.public_ip}"
+  }
+
+  triggers = {
+    bastion_instance_id          = "${aws_instance.bastion.id}"
+    openshift_template_inventory = "${local.openshift_template_inventory}"
+    installer_template           = "${data.template_file.installer_template.rendered}"
+  }
+
+  depends_on = ["aws_instance.bastion"]
+}
+
+resource "null_resource" "openshift_oc_inventory_util" {
+  provisioner "remote-exec" {
+    inline = [
+      "sudo curl -L -o /usr/local/bin/ocinventory https://github.com/literalice/openshift-inventory-utils/releases/download/v0.1/ocinventory_unix",
+      "sudo chmod +x /usr/local/bin/ocinventory",
     ]
   }
 

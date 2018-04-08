@@ -1,0 +1,5 @@
+# playbooks/openshift-component_name/config.yml
+---
+- import_playbook: /usr/share/ansible/openshift-ansible/playbooks/init/main.yml
+
+- import_playbook: private/config.yml
