@@ -31,7 +31,7 @@ resource "aws_launch_configuration" "infra_node" {
 }
 
 resource "aws_autoscaling_group" "infra_node" {
-  vpc_zone_identifier       = ["${data.aws_subnet.private.*.id}"]
+  vpc_zone_identifier       = ["${data.aws_subnet.node.*.id}"]
   name                      = "${var.platform_name}-infra-node"
   max_size                  = "${var.infra_node_count}"
   min_size                  = "${var.infra_node_count}"

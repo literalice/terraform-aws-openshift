@@ -1,17 +1,6 @@
 #cloud-config
 locale: ja_JP.UTF-8
  
-write_files:
- - content: |
-      ${openshift_inventory}
-   owner: root
-   path: /etc/oc-inventory.yml
-   permissions: '0644'
- - content: |
-      ${openshift_install}
-   owner: root
-   path: /etc/oc-install.sh
-   permissions: '0755'
 runcmd:
  - yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
  - sed -i -e "s/^enabled=1/enabled=0/" /etc/yum.repos.d/epel.repo
@@ -22,5 +11,3 @@ runcmd:
  - git clone https://github.com/openshift/openshift-ansible
  - mv openshift-ansible /usr/share/ansible/
  - cd /usr/share/ansible/openshift-ansible && git checkout -b release-${openshift_major_version} origin/release-${openshift_major_version}
- - curl -L -o /usr/local/bin/ocinventory https://github.com/literalice/openshift-inventory-utils/releases/download/v0.1/ocinventory_unix
- - chmod +x /usr/local/bin/ocinventory

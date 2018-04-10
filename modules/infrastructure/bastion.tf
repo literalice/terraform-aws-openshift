@@ -32,7 +32,6 @@ resource "aws_instance" "bastion" {
   user_data = "${data.template_file.bastion_init.rendered}"
 
   tags = "${map(
-    "kubernetes.io/cluster/${var.platform_name}", "owned",
     "Name", "${var.platform_name}-bastion",
     "Role", "bastion"
   )}"

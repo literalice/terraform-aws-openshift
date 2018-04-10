@@ -3,7 +3,7 @@
   tasks:
   - name: cluster-admin
     oc_adm_policy_user:
-      user: {{ item }}
+      user: "{{ item }}"
       resource_kind: cluster-role
       resource_name: cluster-admin
       state: present

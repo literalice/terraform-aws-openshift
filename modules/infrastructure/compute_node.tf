@@ -29,7 +29,7 @@ resource "aws_launch_configuration" "compute_node" {
 }
 
 resource "aws_autoscaling_group" "compute_node" {
-  vpc_zone_identifier       = ["${data.aws_subnet.private.*.id}"]
+  vpc_zone_identifier       = ["${data.aws_subnet.node.*.id}"]
   name                      = "${var.platform_name}-compute-node"
   max_size                  = "${var.compute_node_count}"
   min_size                  = "${var.compute_node_count}"

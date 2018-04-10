@@ -50,7 +50,7 @@ locals {
 }
 
 resource "aws_autoscaling_group" "master" {
-  vpc_zone_identifier       = ["${data.aws_subnet.private.*.id}"]
+  vpc_zone_identifier       = ["${data.aws_subnet.node.*.id}"]
   name                      = "${var.platform_name}-master"
   max_size                  = "${var.master_count}"
   min_size                  = "${var.master_count}"
