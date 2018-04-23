@@ -9,5 +9,6 @@ runcmd:
  - rpm -Uvh https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.4.3.0-1.el7.ans.noarch.rpm
  - yum update
  - git clone https://github.com/openshift/openshift-ansible
+ - mkdir -p /usr/share/ansible/
  - mv openshift-ansible /usr/share/ansible/
  - cd /usr/share/ansible/openshift-ansible && git checkout -b release-${openshift_major_version} origin/release-${openshift_major_version}
