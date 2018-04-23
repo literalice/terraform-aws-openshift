@@ -6,8 +6,7 @@ resource "aws_iam_instance_profile" "compute_node" {
 resource "aws_launch_configuration" "compute_node" {
   name_prefix   = "${var.platform_name}-compute-node-"
   image_id      = "${data.aws_ami.node.id}"
-  instance_type = "m4.large"
-  ebs_optimized = true
+  instance_type = "${var.compute_instance_type}"
 
   security_groups = [
     "${aws_security_group.node.id}",

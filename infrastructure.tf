@@ -13,10 +13,13 @@ module "infrastructure" {
   master_public_dns_name     = "master.${var.platform_default_subdomain}"
   platform_default_subdomain = "${var.platform_default_subdomain}"
 
-  compute_node_count = "${var.compute_node_count}"
-  infra_node_count   = "${var.infra_node_count}"
-  master_count       = "${var.master_count}"
-  master_spot_price  = "${var.master_spot_price}"
+  master_count          = "${var.master_count}"
+  compute_node_count    = "${var.compute_node_count}"
+  infra_node_count      = "${var.infra_node_count}"
+  master_instance_type  = "${var.master_instance_type}"
+  compute_instance_type = "${var.compute_instance_type}"
+  infra_instance_type   = "${var.infra_instance_type}"
+  master_spot_price     = "${var.master_spot_price}"
 
   key_pair_private_key = "${file(var.key_pair_private_key_path == "" ? "${path.module}/empty.txt" : var.key_pair_private_key_path)}"
 

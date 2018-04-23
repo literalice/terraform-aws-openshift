@@ -1,25 +1,25 @@
 resource "aws_security_group" "node" {
-  name = "${var.platform_name}-node"
+  name        = "${var.platform_name}-node"
   description = "Cluster node group for ${var.platform_name}"
 
   ingress {
-    from_port = 22
-    to_port = 22
-    protocol = "tcp"
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
     security_groups = ["${aws_security_group.bastion.id}"]
   }
 
   ingress {
     from_port = 0
-    to_port = 0
-    protocol = "-1"
-    self = true
+    to_port   = 0
+    protocol  = "-1"
+    self      = true
   }
 
   egress {
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -31,4 +31,3 @@ resource "aws_security_group" "node" {
 
   vpc_id = "${data.aws_vpc.platform.id}"
 }
-

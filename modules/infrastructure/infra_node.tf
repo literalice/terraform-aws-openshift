@@ -6,8 +6,7 @@ resource "aws_iam_instance_profile" "infra_node" {
 resource "aws_launch_configuration" "infra_node" {
   name_prefix   = "${var.platform_name}-infra-node-"
   image_id      = "${data.aws_ami.node.id}"
-  instance_type = "m4.large"
-  ebs_optimized = true
+  instance_type = "${var.infra_instance_type}"
 
   security_groups = [
     "${aws_security_group.node.id}",
