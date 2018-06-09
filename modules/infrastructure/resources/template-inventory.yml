@@ -47,3 +47,8 @@ OSEv3:
     openshift_master_default_subdomain: ${platform_default_subdomain}
     openshift_cloudprovider_kind: aws
     openshift_clusterid: ${platform_name}
+    openshift_hosted_logging_deploy: true
+    openshift_logging_es_pvc_dynamic: true
+    openshift_logging_es_memory_limit: 512M
+    openshift_hosted_metrics_deploy: true
+    openshift_metrics_cassandra_storage_type: dynamic

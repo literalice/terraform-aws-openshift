@@ -9,5 +9,9 @@ rh_subscription:
 runcmd:
  - subscription-manager repos --disable="*"
  # - yum-config-manager --disable \*
- - subscription-manager repos --enable="rhel-7-server-rpms" --enable="rhel-7-server-extras-rpms" --enable="rhel-7-server-ose-${openshift_major_version}-rpms" --enable="rhel-7-fast-datapath-rpms" --enable="rhel-7-server-ansible-2.4-rpms"
+ - subscription-manager repos --enable="rhel-7-server-rpms" --enable="rhel-7-server-ose-${openshift_major_version}-rpms" --enable="rhel-7-fast-datapath-rpms" --enable="rhel-7-server-ansible-2.4-rpms"
  - yum -y install atomic-openshift-utils atomic-openshift-clients
+ - curl -O https://bootstrap.pypa.io/get-pip.py
+ - python get-pip.py
+ - pip install awscli --upgrade
+

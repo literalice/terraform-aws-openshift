@@ -15,7 +15,7 @@ variable "public_access_cidrs" {
 }
 
 variable "compute_node_count" {
-  default = 1
+  default = 2
 }
 
 variable "infra_node_count" {
@@ -35,7 +35,7 @@ variable "infra_instance_type" {
 }
 
 variable "compute_instance_type" {
-  default = "m4.large"
+  default = "m4.xlarge"
 }
 
 variable "rh_subscription_pool_id" {}

@@ -33,3 +33,4 @@ output "platform_private_key" {
   value       = "${module.infrastructure.platform_private_key}"
   description = "private key for instances"
 }
+
