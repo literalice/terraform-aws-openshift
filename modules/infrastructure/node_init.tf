@@ -5,5 +5,6 @@ data "template_file" "node_init" {
     rhn_username            = "${var.rhn_username}"
     rhn_password            = "${var.rhn_password}"
     rh_subscription_pool_id = "${var.rh_subscription_pool_id}"
+    openshift_major_version = "${var.openshift_major_version}"
   }
 }

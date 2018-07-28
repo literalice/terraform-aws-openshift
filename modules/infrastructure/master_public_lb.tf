@@ -12,7 +12,7 @@ resource "aws_lb" "master_public" {
 
 resource "aws_lb_listener" "master_public" {
   load_balancer_arn = "${aws_lb.master_public.arn}"
-  port              = "8443"
+  port              = 443
   protocol          = "TCP"
 
   default_action {
@@ -23,7 +23,7 @@ resource "aws_lb_listener" "master_public" {
 
 resource "aws_lb_target_group" "master_public" {
   name                 = "${var.platform_name}-master-public"
-  port                 = 8443
+  port                 = 443
   protocol             = "TCP"
   vpc_id               = "${data.aws_vpc.platform.id}"
   deregistration_delay = 20
@@ -46,6 +46,25 @@ resource "aws_lb_target_group" "master_public_insecure" {
   protocol             = "TCP"
   deregistration_delay = 20
   vpc_id               = "${data.aws_vpc.platform.id}"
+}
+
+resource "aws_lb_listener" "cockpit_public" {
+  load_balancer_arn = "${aws_lb.master_public.arn}"
+  port              = 9090
+  protocol          = "TCP"
+
+  default_action {
+    target_group_arn = "${aws_lb_target_group.cockpit_public.arn}"
+    type             = "forward"
+  }
+}
+
+resource "aws_lb_target_group" "cockpit_public" {
+  name                 = "${var.platform_name}-cockpit-public"
+  port                 = 9090
+  protocol             = "TCP"
+  vpc_id               = "${data.aws_vpc.platform.id}"
+  deregistration_delay = 20
 }
 
 data "dns_a_record_set" "master_public_lb" {

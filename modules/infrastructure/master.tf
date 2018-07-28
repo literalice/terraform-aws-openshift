@@ -29,6 +29,43 @@ resource "aws_launch_configuration" "master" {
   }
 }
 
+# resource "aws_launch_template" "master" {
+#   name_prefix   = "${var.platform_name}-master-"
+#   image_id      = "${data.aws_ami.node.id}"
+#   instance_type = "${var.master_instance_type}"
+# 
+#   vpc_security_group_ids = [
+#     "${aws_security_group.node.id}",
+#     "${aws_security_group.master_public.id}",
+#   ]
+# 
+#   key_name  = "${aws_key_pair.platform.id}"
+#   user_data = "${base64encode(data.template_file.node_init.rendered)}"
+# 
+#   iam_instance_profile {
+#     name = "${aws_iam_instance_profile.master.name}"
+#   }
+# 
+#   block_device_mappings {
+#     device_name = "/dev/sda1"
+# 
+#     ebs {
+#       volume_size = 100
+#     }
+#   }
+# 
+#   tag_specifications {
+#     resource_type = "instance"
+# 
+#     tags = "${map(
+#     "kubernetes.io/cluster/${var.platform_name}", "owned",
+#     "Name", "${var.platform_name}-master",
+#     "Role", "master,node",
+#     "openshift_node_labels_region", "${var.infra_node_count > 0 ? "master" : "infra"}",
+#     )}"
+#   }
+# }
+
 locals {
   master_target_group_arns = [
     "${aws_lb_target_group.master_public.arn}",
@@ -57,7 +94,8 @@ resource "aws_autoscaling_group" "master" {
   health_check_type         = "EC2"
   health_check_grace_period = 300
   force_delete              = true
-  launch_configuration      = "${aws_launch_configuration.master.name}"
+
+  launch_configuration = "${aws_launch_configuration.master.name}"
 
   target_group_arns = ["${local.master_target_groups}"]
 

@@ -3,7 +3,7 @@ data "template_file" "inventory_template" {
 
   vars {
     platform_name                  = "${var.platform_name}"
-    ansible_user                   = "${(var.upstream) ? "centos" : "cloud-user"}"
+    ansible_user                   = "${(var.upstream) ? "centos" : "ec2-user"}"
     master_public_dns_name         = "${var.master_public_dns_name}"
     platform_default_subdomain     = "${var.platform_default_subdomain}"
     openshift_deployment_type      = "${(var.upstream) ? "origin" : "openshift-enterprise"}"

@@ -3,8 +3,8 @@ resource "aws_security_group" "master_public" {
   description = "Master public group for ${var.platform_name}"
 
   ingress {
-    from_port   = 8443
-    to_port     = 8443
+    from_port   = 9090
+    to_port     = 9090
     protocol    = "tcp"
     cidr_blocks = ["${var.operator_cidrs}"]
   }
