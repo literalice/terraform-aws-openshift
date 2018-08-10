@@ -13,20 +13,24 @@ If you are building a OCP cluster,
 
 ## Creates a cluster
 
-You can set-up a cluster using [the example origin platform](/example/origin/) or [the example OCP platform](/example/origin/) project.
+You can set-up a cluster using [the example origin platform](/example/origin/) or [the example OCP platform](/example/ocp/) config.
 
 ### Selects Origin or OCP
 
-If you are building a Origin cluster, use [the example origin platform](/example/origin/) project.
+If you are building a Origin cluster, use [the example origin platform](/example/origin/) config.
+
+For this, set `CLUSTER_CONFIG` environment variable to `origin`
 
 ```bash
-cd ./example/origin
+export CLUSTER_CONFIG=origin
 ```
 
-If you are building a OCP cluster, use [the example OCP platform](/example/ocp/) project.
+If you are building a OCP cluster, use [the example OCP platform](/example/ocp/) config.
+
+For this, set `CLUSTER_CONFIG` environment variable to `ocp`
 
 ```bash
-cd ./example/ocp
+export CLUSTER_CONFIG=ocp
 ```
 
 ### Builds infrastructure on AWS for installing OpenShift.
@@ -34,8 +38,8 @@ cd ./example/ocp
 Use make command and input values requested in the interaction.
 
 ```bash
-make init
-make
+make init CLUSTER_EXAMPLE=ocp
+make CLUSTER_EXAMPLE=ocp
 ```
 
 You will be asked some parameters for configuring the cluster infrastructure. See also [direnv](#direnv).
@@ -64,7 +68,7 @@ See also https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/CreatingNewSu
 Once the DNS setting is active, you can install OpenShift using the command:
 
 ```
-make install
+make install CLUSTER_EXAMPLE=ocp
 ```
 
 After that, you can access the master of the cluster via URL provided as output of the `make install` command.
@@ -109,7 +113,7 @@ open `terraform output master_dns`
 ### SSH to Bastion
 
 ```
-terraform output platform_private_key > .platform_private_key
-chmod 600 ./.platform_private_key
-ssh `terraform output bastion_ssh` -i ./.platform_private_key
+terraform output platform_private_key > /tmp/.platform_private_key
+chmod 600 /tmp/.platform_private_key
+ssh `terraform output bastion_ssh` -i /tmp/.platform_private_key
 ```
