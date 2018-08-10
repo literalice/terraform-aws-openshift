@@ -42,6 +42,12 @@ variable "compute_instance_type" {
   default = "m4.large"
 }
 
+variable "node_image_id" {
+}
+
+variable "bastion_image_id" {
+}
+
 variable "master_spot_price" {
   default = "0.05"
 }
@@ -67,7 +73,7 @@ variable "rhn_password" {
 }
 
 variable "openshift_major_version" {
-  default = "3.9"
+  default = "3.10"
 }
 
 # Domains

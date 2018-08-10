@@ -19,4 +19,7 @@ module "openshift_platform" {
   rhn_password            = "${var.rhn_password}"
 
   platform_default_subdomain = "${var.platform_default_subdomain}"
+
+  bastion_image_id = "${var.image_id}"
+  node_image_id = "${var.image_id}"
 }

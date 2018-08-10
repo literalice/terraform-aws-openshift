@@ -10,10 +10,9 @@ OSEv3:
     ansible_user: ${ansible_user}
     ansible_become: true
     openshift_deployment_type: ${openshift_deployment_type}
-    openshift_release: "v${openshift_major_version}"
+    openshift_release: "${openshift_major_version}"
     openshift_repos_enable_testing: ${openshift_repos_enable_testing}
     openshift_cluster_admin_users: ${openshift_cluster_admin_users}
-    containerized: true
     openshift_master_identity_providers:
       - name: 'test_identity_provider'
         login: true

@@ -35,7 +35,7 @@ variable "infra_instance_type" {
 }
 
 variable "compute_instance_type" {
-  default = "m4.xlarge"
+  default = "m4.large"
 }
 
 variable "rh_subscription_pool_id" {}
@@ -45,3 +45,6 @@ variable "rhn_username" {}
 variable "rhn_password" {}
 
 variable "platform_default_subdomain" {}
+
+variable "image_id" {
+}

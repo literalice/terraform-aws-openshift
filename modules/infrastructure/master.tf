@@ -5,7 +5,7 @@ resource "aws_iam_instance_profile" "master" {
 
 resource "aws_launch_configuration" "master" {
   name_prefix   = "${var.platform_name}-master-"
-  image_id      = "${data.aws_ami.node.id}"
+  image_id      = "${local.openshift_image_id}"
   instance_type = "${var.master_instance_type}"
 
   security_groups = [
@@ -14,7 +14,6 @@ resource "aws_launch_configuration" "master" {
   ]
 
   key_name             = "${aws_key_pair.platform.id}"
-  user_data            = "${data.template_file.node_init.rendered}"
   iam_instance_profile = "${aws_iam_instance_profile.master.name}"
   spot_price           = "${var.upstream ? var.master_spot_price : ""}"
 
@@ -120,8 +119,8 @@ resource "aws_autoscaling_group" "master" {
   }
 
   tag {
-    key                 = "openshift_node_labels_region"
-    value               = "${var.infra_node_count > 0 ? "master" : "infra"}"
+    key                 = "openshift_node_group_name"
+    value               = "${var.infra_node_count > 0 ? "node-config-master" : "node-config-master-infra"}"
     propagate_at_launch = true
   }
 

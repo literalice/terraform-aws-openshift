@@ -5,7 +5,7 @@ resource "aws_iam_instance_profile" "infra_node" {
 
 resource "aws_launch_configuration" "infra_node" {
   name_prefix   = "${var.platform_name}-infra-node-"
-  image_id      = "${data.aws_ami.node.id}"
+  image_id      = "${local.openshift_image_id}"
   instance_type = "${var.infra_instance_type}"
 
   security_groups = [
@@ -15,7 +15,6 @@ resource "aws_launch_configuration" "infra_node" {
   ]
 
   key_name             = "${aws_key_pair.platform.id}"
-  user_data            = "${data.template_file.node_init.rendered}"
   iam_instance_profile = "${aws_iam_instance_profile.infra_node.name}"
 
   lifecycle {
@@ -64,8 +63,8 @@ resource "aws_autoscaling_group" "infra_node" {
   }
 
   tag {
-    key                 = "openshift_node_labels_region"
-    value               = "infra"
+    key                 = "openshift_node_group_name"
+    value               = "node-config-infra"
     propagate_at_launch = true
   }
 

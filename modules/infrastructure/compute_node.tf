@@ -5,7 +5,7 @@ resource "aws_iam_instance_profile" "compute_node" {
 
 resource "aws_launch_configuration" "compute_node" {
   name_prefix   = "${var.platform_name}-compute-node-"
-  image_id      = "${data.aws_ami.node.id}"
+  image_id      = "${local.openshift_image_id}"
   instance_type = "${var.compute_instance_type}"
 
   security_groups = [
@@ -13,7 +13,6 @@ resource "aws_launch_configuration" "compute_node" {
   ]
 
   key_name             = "${aws_key_pair.platform.id}"
-  user_data            = "${data.template_file.node_init.rendered}"
   iam_instance_profile = "${aws_iam_instance_profile.compute_node.name}"
 
   lifecycle {
@@ -53,6 +52,12 @@ resource "aws_autoscaling_group" "compute_node" {
   tag {
     key                 = "Role"
     value               = "node"
+    propagate_at_launch = true
+  }
+
+  tag {
+    key                 = "openshift_node_group_name"
+    value               = "node-config-compute"
     propagate_at_launch = true
   }
 

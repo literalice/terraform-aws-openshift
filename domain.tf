@@ -9,6 +9,6 @@ module "domain" {
   platform_default_subdomain = "${var.platform_default_subdomain}"
   platform_public_lb_arn = "${module.infrastructure.platform_public_lb_arn}"
 
-  master_public_dns_name = "master.${var.platform_default_subdomain}"
+  master_public_dns_name = "${var.platform_default_subdomain}"
   master_public_lb_arn = "${module.infrastructure.master_public_lb_arn}"
 }

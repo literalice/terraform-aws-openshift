@@ -21,5 +21,9 @@ data "template_file" "installer_template" {
   vars {
     platform_name       = "${var.platform_name}"
     platform_aws_region = "${data.aws_region.current.name}"
+    openshift_major_version        = "${var.openshift_major_version}"
+    rhn_username                   = "${var.rhn_username}"
+    rhn_password                   = "${var.rhn_password}"
+    rh_subscription_pool_id        = "${var.rh_subscription_pool_id}"
   }
 }

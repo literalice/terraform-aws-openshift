@@ -10,7 +10,7 @@ module "infrastructure" {
   operator_cidrs      = ["${var.operator_cidrs}"]
   public_access_cidrs = ["${var.public_access_cidrs}"]
 
-  master_public_dns_name     = "master.${var.platform_default_subdomain}"
+  master_public_dns_name     = "${var.platform_default_subdomain}"
   platform_default_subdomain = "${var.platform_default_subdomain}"
 
   master_count          = "${var.master_count}"
@@ -28,4 +28,7 @@ module "infrastructure" {
   rh_subscription_pool_id = "${var.rh_subscription_pool_id}"
   rhn_username            = "${var.rhn_username}"
   rhn_password            = "${var.rhn_password}"
+
+  node_image_id = "${var.node_image_id}"
+  bastion_image_id = "${var.bastion_image_id}"
 }

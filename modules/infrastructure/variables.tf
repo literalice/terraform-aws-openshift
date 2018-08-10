@@ -83,3 +83,9 @@ variable "infra_instance_type" {
 variable "compute_instance_type" {
   default = "m4.large"
 }
+
+variable "node_image_id" {
+}
+
+variable "bastion_image_id" {
+}
