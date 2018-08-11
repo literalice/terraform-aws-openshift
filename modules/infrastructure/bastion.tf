@@ -20,8 +20,9 @@ locals {
 }
 
 resource "aws_instance" "bastion" {
+  count                       = "${var.bastion_spot_price == "" ? 1 : 0}"
   ami                         = "${local.bastion_image_id}"
-  instance_type               = "m4.large"
+  instance_type               = "${var.bastion_instance_type}"
   subnet_id                   = "${element(data.aws_subnet.public.*.id, 0)}"
   associate_public_ip_address = true
   key_name                    = "${aws_key_pair.platform.id}"
@@ -31,10 +32,32 @@ resource "aws_instance" "bastion" {
 
   user_data = "${data.template_file.bastion_init.rendered}"
 
-  tags = "${map(
-    "Name", "${var.platform_name}-bastion",
-    "Role", "bastion"
-  )}"
+  tags = "${map("Name", "${var.platform_name}-bastion")}"
+}
+
+resource "aws_spot_instance_request" "bastion" {
+  count = "${var.bastion_spot_price == "" ? 0 : 1}"
+
+  spot_price           = "${var.bastion_spot_price}"
+  wait_for_fulfillment = true
+  spot_type            = "one-time"
+
+  ami                         = "${local.bastion_image_id}"
+  instance_type               = "${var.bastion_instance_type}"
+  subnet_id                   = "${element(data.aws_subnet.public.*.id, 0)}"
+  associate_public_ip_address = true
+  key_name                    = "${aws_key_pair.platform.id}"
+
+  vpc_security_group_ids = ["${aws_security_group.bastion.id}"]
+  iam_instance_profile   = "${aws_iam_instance_profile.bastion.name}"
+
+  user_data = "${data.template_file.bastion_init.rendered}"
+
+  tags = "${map("Name", "${var.platform_name}-bastion")}"
+}
+
+data "aws_instance" "bastion" {
+  instance_id = "${element(concat(aws_instance.bastion.*.id, aws_spot_instance_request.bastion.*.spot_instance_id), 0)}"
 }
 
 resource "null_resource" "openshift_platform_key" {
@@ -53,14 +76,12 @@ resource "null_resource" "openshift_platform_key" {
     type        = "ssh"
     user        = "${local.bastion_ssh_user}"
     private_key = "${data.tls_public_key.platform.private_key_pem}"
-    host        = "${aws_instance.bastion.public_ip}"
+    host        = "${data.aws_instance.bastion.public_ip}"
   }
 
   triggers = {
-    bastion_instance_id = "${aws_instance.bastion.id}"
+    bastion_instance_id = "${data.aws_instance.bastion.id}"
   }
-
-  depends_on = ["aws_instance.bastion"]
 }
 
 resource "null_resource" "openshift_additional_playbooks" {
@@ -73,23 +94,17 @@ resource "null_resource" "openshift_additional_playbooks" {
     type        = "ssh"
     user        = "${local.bastion_ssh_user}"
     private_key = "${data.tls_public_key.platform.private_key_pem}"
-    host        = "${aws_instance.bastion.public_ip}"
+    host        = "${data.aws_instance.bastion.public_ip}"
   }
 
   triggers = {
-    bastion_instance_id = "${aws_instance.bastion.id}"
+    bastion_instance_id = "${data.aws_instance.bastion.id}"
   }
-
-  depends_on = ["aws_instance.bastion"]
-}
-
-locals {
-  openshift_template_inventory = "${var.openshift_inventory == "" ? data.template_file.inventory_template.rendered : var.openshift_inventory}"
 }
 
 resource "null_resource" "openshift_installer" {
   provisioner "file" {
-    content     = "${local.openshift_template_inventory}"
+    content     = "${data.template_file.inventory_template.rendered}"
     destination = "~/template-inventory.yml"
   }
 
@@ -102,16 +117,14 @@ resource "null_resource" "openshift_installer" {
     type        = "ssh"
     user        = "${local.bastion_ssh_user}"
     private_key = "${data.tls_public_key.platform.private_key_pem}"
-    host        = "${aws_instance.bastion.public_ip}"
+    host        = "${data.aws_instance.bastion.public_ip}"
   }
 
   triggers = {
-    bastion_instance_id          = "${aws_instance.bastion.id}"
-    openshift_template_inventory = "${local.openshift_template_inventory}"
+    bastion_instance_id          = "${data.aws_instance.bastion.id}"
+    openshift_template_inventory = "${data.template_file.inventory_template.rendered}"
     installer_template           = "${data.template_file.installer_template.rendered}"
   }
-
-  depends_on = ["aws_instance.bastion"]
 }
 
 resource "null_resource" "openshift_oc_inventory_util" {
@@ -126,12 +139,10 @@ resource "null_resource" "openshift_oc_inventory_util" {
     type        = "ssh"
     user        = "${local.bastion_ssh_user}"
     private_key = "${data.tls_public_key.platform.private_key_pem}"
-    host        = "${aws_instance.bastion.public_ip}"
+    host        = "${data.aws_instance.bastion.public_ip}"
   }
 
   triggers = {
-    bastion_instance_id = "${aws_instance.bastion.id}"
+    bastion_instance_id = "${data.aws_instance.bastion.id}"
   }
-
-  depends_on = ["aws_instance.bastion"]
 }

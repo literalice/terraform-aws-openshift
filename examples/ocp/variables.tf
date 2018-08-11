@@ -9,7 +9,7 @@ variable "operator_cidrs" {
   default = ["0.0.0.0/0"]
 }
 
-variable "public_access_cidrs" {
+variable "public_cidrs" {
   type    = "list"
   default = ["0.0.0.0/0"]
 }
@@ -44,7 +44,8 @@ variable "rhn_username" {}
 
 variable "rhn_password" {}
 
-variable "platform_default_subdomain" {}
-
-variable "image_id" {
+variable "platform_domain" {
+  default = ""
 }
+
+variable "image_id" {}

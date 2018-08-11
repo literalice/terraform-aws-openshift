@@ -21,8 +21,8 @@ OSEv3:
     os_sdn_network_plugin_name: 'redhat/openshift-ovs-networkpolicy'
     openshift_disable_check: 'disk_availability,memory_availability'
     openshift_master_cluster_hostname: master.${platform_name}.internal
-    openshift_master_cluster_public_hostname: ${master_public_dns_name}
-    openshift_master_default_subdomain: ${platform_default_subdomain}
+    openshift_master_cluster_public_hostname: ${platform_domain}
+    openshift_master_default_subdomain: ${platform_domain}
     openshift_cloudprovider_kind: aws
     openshift_clusterid: ${platform_name}
     openshift_logging_install_logging: true

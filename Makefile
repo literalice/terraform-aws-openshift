@@ -5,6 +5,9 @@ all: domain
 init:
 	@terraform init examples/$(CLUSTER_CONFIG)
 
+test:
+	@terraform apply -target null_resource.openshift_check examples/$(CLUSTER_CONFIG)
+	
 network:
 	@echo "Builds network for OpenShift"
 	@terraform apply -target module.openshift_platform.module.network examples/$(CLUSTER_CONFIG)

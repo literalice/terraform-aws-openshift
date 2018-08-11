@@ -1,5 +1,5 @@
-provider "aws" {
-}
+provider "aws" {}
 
-provider "null" {
-}
+provider "null" {}
+
+data "aws_region" "current" {}

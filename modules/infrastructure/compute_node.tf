@@ -5,8 +5,10 @@ resource "aws_iam_instance_profile" "compute_node" {
 
 resource "aws_launch_configuration" "compute_node" {
   name_prefix   = "${var.platform_name}-compute-node-"
-  image_id      = "${local.openshift_image_id}"
+  image_id      = "${local.node_image_id}"
   instance_type = "${var.compute_instance_type}"
+
+  spot_price    = "${var.compute_node_spot_price}"
 
   security_groups = [
     "${aws_security_group.node.id}",

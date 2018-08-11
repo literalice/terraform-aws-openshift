@@ -3,128 +3,76 @@ resource "aws_iam_instance_profile" "master" {
   role = "${aws_iam_role.master.name}"
 }
 
-resource "aws_launch_configuration" "master" {
-  name_prefix   = "${var.platform_name}-master-"
-  image_id      = "${local.openshift_image_id}"
+resource "aws_instance" "master" {
+  count = "${var.master_spot_price == "" ? 1 : 0}"
+
+  ami           = "${local.node_image_id}"
   instance_type = "${var.master_instance_type}"
 
-  security_groups = [
+  associate_public_ip_address = true
+
+  subnet_id = "${element(data.aws_subnet.node.*.id, 0)}"
+
+  vpc_security_group_ids = [
     "${aws_security_group.node.id}",
     "${aws_security_group.master_public.id}",
   ]
 
-  key_name             = "${aws_key_pair.platform.id}"
-  iam_instance_profile = "${aws_iam_instance_profile.master.name}"
-  spot_price           = "${var.upstream ? var.master_spot_price : ""}"
+  key_name = "${aws_key_pair.platform.id}"
 
-  lifecycle {
-    create_before_destroy = true
-  }
+  iam_instance_profile = "${aws_iam_instance_profile.master.name}"
 
   root_block_device {
+    volume_size           = 100
     volume_type           = "gp2"
-    volume_size           = "100"
     delete_on_termination = true
   }
+
+  tags = "${map(
+    "kubernetes.io/cluster/${var.platform_name}", "owned",
+    "Name", "${var.platform_name}-master",
+    "Role", "master,node",
+    "openshift_node_group_name", "${local.master_node_group_name}",
+    )}"
 }
 
-# resource "aws_launch_template" "master" {
-#   name_prefix   = "${var.platform_name}-master-"
-#   image_id      = "${data.aws_ami.node.id}"
-#   instance_type = "${var.master_instance_type}"
-# 
-#   vpc_security_group_ids = [
-#     "${aws_security_group.node.id}",
-#     "${aws_security_group.master_public.id}",
-#   ]
-# 
-#   key_name  = "${aws_key_pair.platform.id}"
-#   user_data = "${base64encode(data.template_file.node_init.rendered)}"
-# 
-#   iam_instance_profile {
-#     name = "${aws_iam_instance_profile.master.name}"
-#   }
-# 
-#   block_device_mappings {
-#     device_name = "/dev/sda1"
-# 
-#     ebs {
-#       volume_size = 100
-#     }
-#   }
-# 
-#   tag_specifications {
-#     resource_type = "instance"
-# 
-#     tags = "${map(
-#     "kubernetes.io/cluster/${var.platform_name}", "owned",
-#     "Name", "${var.platform_name}-master",
-#     "Role", "master,node",
-#     "openshift_node_labels_region", "${var.infra_node_count > 0 ? "master" : "infra"}",
-#     )}"
-#   }
-# }
+resource "aws_spot_instance_request" "master" {
+  count = "${var.master_spot_price == "" ? 0 : 1}"
 
-locals {
-  master_target_group_arns = [
-    "${aws_lb_target_group.master_public.arn}",
-    "${aws_lb_target_group.master_public_insecure.arn}",
+  spot_price           = "${var.master_spot_price}"
+  wait_for_fulfillment = true
+  spot_type            = "one-time"
+
+  ami           = "${local.node_image_id}"
+  instance_type = "${var.master_instance_type}"
+
+  associate_public_ip_address = true
+
+  subnet_id = "${element(data.aws_subnet.node.*.id, 0)}"
+
+  vpc_security_group_ids = [
+    "${aws_security_group.node.id}",
+    "${aws_security_group.master_public.id}",
   ]
 
-  master_infra_target_group_arns = [
-    "${aws_lb_target_group.master_public.arn}",
-    "${aws_lb_target_group.master_public_insecure.arn}",
-    "${aws_lb_target_group.platform_public_insecure.arn}",
-    "${aws_lb_target_group.platform_public.arn}",
-  ]
+  key_name = "${aws_key_pair.platform.id}"
 
-  # https://github.com/hashicorp/terraform/issues/12453
-  master_target_groups = [
-    "${split(",", var.infra_node_count > 0 ? join(",", local.master_target_group_arns) : join(",", local.master_infra_target_group_arns))}",
-  ]
+  iam_instance_profile = "${aws_iam_instance_profile.master.name}"
+
+  root_block_device {
+    volume_size           = 100
+    volume_type           = "gp2"
+    delete_on_termination = true
+  }
+
+  tags = "${map(
+    "kubernetes.io/cluster/${var.platform_name}", "owned",
+    "Name", "${var.platform_name}-master",
+    "Role", "master,node",
+    "openshift_node_group_name", "${local.master_node_group_name}",
+    )}"
 }
 
-resource "aws_autoscaling_group" "master" {
-  vpc_zone_identifier       = ["${data.aws_subnet.node.*.id}"]
-  name                      = "${var.platform_name}-master"
-  max_size                  = "${var.master_count}"
-  min_size                  = "${var.master_count}"
-  desired_capacity          = "${var.master_count}"
-  health_check_type         = "EC2"
-  health_check_grace_period = 300
-  force_delete              = true
-
-  launch_configuration = "${aws_launch_configuration.master.name}"
-
-  target_group_arns = ["${local.master_target_groups}"]
-
-  load_balancers = ["${aws_elb.master.name}"]
-
-  tag {
-    key                 = "kubernetes.io/cluster/${var.platform_name}"
-    value               = "owned"
-    propagate_at_launch = true
-  }
-
-  tag {
-    key                 = "Name"
-    value               = "${var.platform_name}-master"
-    propagate_at_launch = true
-  }
-
-  tag {
-    key                 = "Role"
-    value               = "node,master"
-    propagate_at_launch = true
-  }
-
-  tag {
-    key                 = "openshift_node_group_name"
-    value               = "${var.infra_node_count > 0 ? "node-config-master" : "node-config-master-infra"}"
-    propagate_at_launch = true
-  }
-
-  timeouts {
-    delete = "15m"
-  }
+data "aws_instance" "master" {
+  instance_id = "${element(concat(aws_instance.master.*.id, aws_spot_instance_request.master.*.spot_instance_id), 0)}"
 }

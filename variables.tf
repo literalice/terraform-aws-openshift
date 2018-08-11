@@ -12,29 +12,29 @@ variable "operator_cidrs" {
   description = "CIDRS that is allowed from which master api can be accessed"
 }
 
-variable "public_access_cidrs" {
+variable "public_cidrs" {
   type        = "list"
   default     = ["0.0.0.0/0"]
   description = "CIDRS that is allowed from which public users can access served services in the cluster"
+}
+
+variable "bastion_image_id" {}
+
+variable "node_image_id" {}
+
+variable "master_count" {
+  default = 1
 }
 
 variable "compute_node_count" {
   default = 2
 }
 
-variable "infra_node_count" {
-  default = 1
-}
-
-variable "master_count" {
-  default = 1
+variable "bastion_instance_type" {
+  default = "t2.medium"
 }
 
 variable "master_instance_type" {
-  default = "m4.large"
-}
-
-variable "infra_instance_type" {
   default = "m4.large"
 }
 
@@ -42,14 +42,16 @@ variable "compute_instance_type" {
   default = "m4.large"
 }
 
-variable "node_image_id" {
-}
-
-variable "bastion_image_id" {
+variable "bastion_spot_price" {
+  default = "0.1"
 }
 
 variable "master_spot_price" {
-  default = "0.05"
+  default = "0.1"
+}
+
+variable "compute_node_spot_price" {
+  default = "0.1"
 }
 
 variable "upstream" {
@@ -78,6 +80,7 @@ variable "openshift_major_version" {
 
 # Domains
 
-variable "platform_default_subdomain" {
+variable "platform_domain" {
   description = "Public DNS subdomain for access to services served in the cluster"
+  default     = ""
 }
