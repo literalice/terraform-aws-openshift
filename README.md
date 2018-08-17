@@ -38,8 +38,8 @@ export CLUSTER_CONFIG=ocp
 Use make command and input values requested in the interaction.
 
 ```bash
-make init CLUSTER_EXAMPLE=ocp
-make CLUSTER_EXAMPLE=ocp
+make init CLUSTER_CONFIG=ocp
+make CLUSTER_CONFIG=ocp
 ```
 
 You will be asked some parameters for configuring the cluster infrastructure. See also [direnv](#direnv).
@@ -68,7 +68,7 @@ See also https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/CreatingNewSu
 Once the DNS setting is active, you can install OpenShift using the command:
 
 ```
-make install CLUSTER_EXAMPLE=ocp
+make install CLUSTER_CONFIG=ocp
 ```
 
 After that, you can access the master of the cluster via URL provided as output of the `make install` command.
@@ -113,7 +113,7 @@ open `terraform output master_dns`
 ### SSH to Bastion
 
 ```
-terraform output platform_private_key > /tmp/.platform_private_key
+make key > /tmp/.platform_private_key
 chmod 600 /tmp/.platform_private_key
-ssh `terraform output bastion_ssh` -i /tmp/.platform_private_key
+ssh `make sshspec` -i /tmp/.platform_private_key
 ```

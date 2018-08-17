@@ -1,13 +1,13 @@
 output "bastion_instance_id" {
-  value = "${data.aws_instance.bastion.id}"
+  value = "${data.aws_instances.bastion.ids[0]}"
 }
 
 output "bastion_ssh_user" {
   value = "${local.bastion_ssh_user}"
 }
 
-output "bastion_public_dns" {
-  value = "${data.aws_instance.bastion.public_dns}"
+output "bastion_endpoint" {
+  value = "${data.aws_instances.bastion.public_ips[0]}"
 }
 
 output "platform_private_key" {
@@ -17,4 +17,8 @@ output "platform_private_key" {
 
 output "master_endpoints" {
   value = ["${data.aws_instance.master.public_ip}"]
+}
+
+output "master_url" {
+  value = "https://${local.platform_domain}"
 }

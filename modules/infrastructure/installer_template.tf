@@ -1,4 +1,4 @@
-data "template_file" "inventory_template" {
+data "template_file" "template_inventory" {
   template = "${file("${path.module}/resources/template-inventory.yml")}"
 
   vars {
@@ -10,6 +10,8 @@ data "template_file" "inventory_template" {
     openshift_repos_enable_testing = "${(var.upstream) ? "true" : "false"}"
     openshift_cluster_admin_users  = "[${join(",", formatlist("\"%s\"", var.openshift_cluster_admin_users))}]"
   }
+
+  depends_on = ["aws_autoscaling_group.master"]
 }
 
 data "aws_region" "current" {}

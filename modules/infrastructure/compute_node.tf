@@ -8,11 +8,13 @@ resource "aws_launch_configuration" "compute_node" {
   image_id      = "${local.node_image_id}"
   instance_type = "${var.compute_instance_type}"
 
-  spot_price    = "${var.compute_node_spot_price}"
+  spot_price = "${var.compute_node_spot_price}"
 
   security_groups = [
     "${aws_security_group.node.id}",
   ]
+
+  associate_public_ip_address = true
 
   key_name             = "${aws_key_pair.platform.id}"
   iam_instance_profile = "${aws_iam_instance_profile.compute_node.name}"

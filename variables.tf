@@ -31,7 +31,7 @@ variable "compute_node_count" {
 }
 
 variable "bastion_instance_type" {
-  default = "t2.medium"
+  default = "m4.large"
 }
 
 variable "master_instance_type" {
