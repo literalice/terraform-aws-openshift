@@ -1,11 +1,11 @@
 output "certificate_pem" {
-  value = "${acme_certificate.platform_domain.certificate_pem}"
+  value = "${element(concat(acme_certificate.platform_domain.*.certificate_pem, list("")), 0)}"
 }
 
 output "certificate_key" {
-  value = "${tls_private_key.platform_domain_csr.private_key_pem}"
+  value = "${element(concat(tls_private_key.platform_domain_csr.*.private_key_pem, list("")), 0)}"
 }
 
 output "certificate_intermediate_pem" {
-  value = "${acme_certificate.platform_domain.issuer_pem}"
+  value = "${element(concat(acme_certificate.platform_domain.*.issuer_pem, list("")), 0)}"
 }

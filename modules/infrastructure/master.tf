@@ -77,8 +77,17 @@ data "aws_instances" "master" {
     Name = "${var.platform_name}-master"
   }
 
-  instance_state_names = ["running"]
-  depends_on           = ["aws_autoscaling_group.master"]
+  filter {
+    name   = "vpc-id"
+    values = ["${data.aws_vpc.platform.id}"]
+  }
+
+  filter {
+    name   = "instance-state-name"
+    values = ["running"]
+  }
+
+  depends_on = ["aws_autoscaling_group.master"]
 }
 
 data "aws_instance" "master" {

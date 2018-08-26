@@ -43,5 +43,10 @@ resource "null_resource" "openshift_installer" {
     host        = "${data.aws_instance.bastion.public_ip}"
   }
 
+  triggers {
+    inventory = "${data.template_file.template_inventory.rendered}"
+    installer = "${data.template_file.installer_template.rendered}"
+  }
+
   depends_on = ["module.infrastructure"]
 }

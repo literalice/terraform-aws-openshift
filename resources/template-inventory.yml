@@ -30,8 +30,8 @@ OSEv3:
     openshift_logging_es_memory_limit: 512M
     openshift_metrics_install_metrics: true
     openshift_metrics_cassandra_storage_type: dynamic
-    osm_use_cockpit: true
-    osm_cockpit_plugins: ['cockpit-kubernetes']
+${openshift_deployment_type == "openshift-enterprise" ? "" : "#"}    osm_use_cockpit: true
+${openshift_deployment_type == "openshift-enterprise" ? "" : "#"}    osm_cockpit_plugins: ['cockpit-kubernetes']
     openshift_master_overwrite_named_certificates: ${named_certificate}
 ${named_certificate ? "" : "#"}    openshift_master_named_certificates:
 ${named_certificate ? "" : "#"}    - certfile: '/home/${ansible_user}/platform_cert.pem'

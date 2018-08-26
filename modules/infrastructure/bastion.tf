@@ -84,6 +84,10 @@ data "aws_instances" "bastion" {
     values = ["${data.aws_vpc.platform.id}"]
   }
 
-  instance_state_names = ["running"]
-  depends_on           = ["aws_autoscaling_group.bastion"]
+  filter {
+    name   = "instance-state-name"
+    values = ["running"]
+  }
+
+  depends_on = ["aws_autoscaling_group.bastion"]
 }

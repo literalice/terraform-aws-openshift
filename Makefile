@@ -3,58 +3,58 @@
 all: domain
 
 init:
-	@terraform init examples/$(CLUSTER_CONFIG)
+	@cd examples/$(CLUSTER_CONFIG); terraform init
 
 refresh:
-	@terraform refresh examples/$(CLUSTER_CONFIG)
+	@cd examples/$(CLUSTER_CONFIG); terraform refresh
 
 test:
-	@terraform apply -target null_resource.openshift_check examples/$(CLUSTER_CONFIG)
+	@cd examples/$(CLUSTER_CONFIG); terraform apply -target null_resource.openshift_check
 
 key:
-	@TF_DATA_DIR=example/$(CLUSTER_CONFIG) terraform output -module openshift_platform platform_private_key
+	@cd examples/$(CLUSTER_CONFIG); terraform output -module openshift_platform platform_private_key
 
 sshspec:
-	@TF_DATA_DIR=example/$(CLUSTER_CONFIG) terraform output -module openshift_platform bastion_ssh
+	@cd examples/$(CLUSTER_CONFIG); terraform output -module openshift_platform bastion_ssh
 
 csr:
-	@TF_DATA_DIR=example/$(CLUSTER_CONFIG) terraform output -module openshift_platform.domain certificate_pem
+	@cd examples/$(CLUSTER_CONFIG); terraform output -module openshift_platform.domain certificate_pem
 
 master-url:
 	@TF_DATA_DIR=example/$(CLUSTER_CONFIG) terraform output -module openshift_platform.infrastructure master_url
 
 network:
 	@echo "Builds network for OpenShift"
-	@terraform apply -target module.openshift_platform.module.network examples/$(CLUSTER_CONFIG)
+	@cd examples/$(CLUSTER_CONFIG); terraform apply -target module.openshift_platform.module.network
 
 infrastructure: network
 	@echo "Builds infrastructure for OpenShift"
-	@terraform apply -target module.openshift_platform.module.infrastructure examples/$(CLUSTER_CONFIG)
-	@TF_DATA_DIR=example/$(CLUSTER_CONFIG) terraform output -module openshift_platform.infrastructure
+	@cd examples/$(CLUSTER_CONFIG); terraform apply -target module.openshift_platform.module.infrastructure
+	@cd examples/$(CLUSTER_CONFIG); terraform output -module openshift_platform.infrastructure
 
 domain: infrastructure
 	@echo "Builds domain zone for OpenShift"
-	@terraform apply -target module.openshift_platform.module.domain examples/$(CLUSTER_CONFIG)
+	@cd examples/$(CLUSTER_CONFIG); terraform apply -target module.openshift_platform.module.domain
 
 install:
-	@terraform apply examples/$(CLUSTER_CONFIG)
+	@cd examples/$(CLUSTER_CONFIG); terraform apply
 
 destroy-network:
 	@echo "Destroy platform network resources ..."
-	@terraform destroy -target module.openshift_platform.module.network examples/$(CLUSTER_CONFIG)
+	@cd examples/$(CLUSTER_CONFIG); terraform destroy -target module.openshift_platform.module.network
 
 destroy-infrastructure:
 	@echo "Destroy platform infrastructure resources ..."
-	@terraform destroy -target module.openshift_platform.module.infrastructure examples/$(CLUSTER_CONFIG)
+	@cd examples/$(CLUSTER_CONFIG); terraform destroy -target module.openshift_platform.module.infrastructure
 
 destroy-domain:
 	@echo "Destroy platform domain resources ..."
-	@terraform destroy -target module.openshift_platform.module.domain examples/$(CLUSTER_CONFIG)
+	@cd examples/$(CLUSTER_CONFIG); terraform destroy -target module.openshift_platform.module.domain
 
 destroy:
 	@echo "Destroy domain settings ..."
-	@terraform destroy -target module.openshift_platform.module.domain examples/$(CLUSTER_CONFIG)
+	@cd examples/$(CLUSTER_CONFIG); terraform destroy -target module.openshift_platform.module.domain
 	@echo "Destroy infrastructure resources ..."
-	@terraform destroy -target module.openshift_platform.module.infrastructure examples/$(CLUSTER_CONFIG)
+	@cd examples/$(CLUSTER_CONFIG); terraform destroy -target module.openshift_platform.module.infrastructure
 	@echo "Destroy platform network resources ..."
-	@terraform destroy -target module.openshift_platform.module.network examples/$(CLUSTER_CONFIG)
+	@cd examples/$(CLUSTER_CONFIG); terraform destroy -target module.openshift_platform.module.network
