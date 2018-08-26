@@ -7,19 +7,19 @@ OSEv3:
     nodes:
       hosts:
   vars:
+    timeout: 60
     ansible_user: ${ansible_user}
     ansible_become: true
     openshift_deployment_type: ${openshift_deployment_type}
     openshift_release: "${openshift_major_version}"
     openshift_repos_enable_testing: ${openshift_repos_enable_testing}
-    openshift_cluster_admin_users: ${openshift_cluster_admin_users}
     openshift_master_identity_providers:
       - name: 'test_identity_provider'
         login: true
         challenge: true
         kind: 'AllowAllPasswordIdentityProvider'
     os_sdn_network_plugin_name: 'redhat/openshift-ovs-networkpolicy'
-    openshift_disable_check: 'disk_availability,memory_availability'
+    openshift_disable_check: 'disk_availability,memory_availability,docker_image_availability'
     openshift_master_cluster_hostname: master.${platform_name}.internal
     openshift_master_cluster_public_hostname: ${platform_domain}
     openshift_master_default_subdomain: ${platform_domain}
@@ -30,5 +30,15 @@ OSEv3:
     openshift_logging_es_memory_limit: 512M
     openshift_metrics_install_metrics: true
     openshift_metrics_cassandra_storage_type: dynamic
-    openshift_master_api_port: 443
-    openshift_master_console_port: 443
+    osm_use_cockpit: true
+    osm_cockpit_plugins: ['cockpit-kubernetes']
+    openshift_master_overwrite_named_certificates: ${named_certificate}
+${named_certificate ? "" : "#"}    openshift_master_named_certificates:
+${named_certificate ? "" : "#"}    - certfile: '/home/${ansible_user}/platform_cert.pem'
+${named_certificate ? "" : "#"}      keyfile: '/home/${ansible_user}/platform_cert.key'
+${named_certificate ? "" : "#"}      cafile: '/home/${ansible_user}/platform_intermediate.pem'
+${named_certificate ? "" : "#"}      names: ['${platform_domain}']
+${named_certificate ? "" : "#"}    openshift_hosted_router_certificate:
+${named_certificate ? "" : "#"}      certfile: '/home/${ansible_user}/platform_cert.pem'
+${named_certificate ? "" : "#"}      keyfile: '/home/${ansible_user}/platform_cert.key'
+${named_certificate ? "" : "#"}      cafile: '/home/${ansible_user}/platform_intermediate.pem'

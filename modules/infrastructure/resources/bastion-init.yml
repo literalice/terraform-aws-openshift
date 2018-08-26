@@ -7,14 +7,6 @@ rh_subscription:
   auto-attach: False
   add-pool: [ '${rh_subscription_pool_id}' ]
 write_files:
--   content: ${template_inventory}
-    encoding: base64
-    path: /root/template-inventory.yml
-    permissions: '0644'
--   content: ${oc_install}
-    encoding: base64
-    path: /root/oc-install.sh
-    permissions: '0644'
 -   content: ${platform_id_rsa}
     encoding: base64
     path: /root/platform_id_rsa
@@ -23,13 +15,9 @@ runcmd:
  - subscription-manager repos --disable="*"
  - subscription-manager repos --enable="rhel-7-server-rpms" --enable="rhel-7-server-extras-rpms" --enable="rhel-7-fast-datapath-rpms" --enable="rhel-7-server-ansible-2.4-rpms"
  - subscription-manager repos --enable="rhel-7-server-ose-${openshift_major_version}-rpms"
- - yum -y install openshift-ansible atomic-openshift-clients
+ - yum -y install openshift-ansible atomic-openshift-clients vim
  - curl -L -o /usr/local/bin/ocinventory https://github.com/literalice/openshift-inventory-utils/releases/download/v0.1/ocinventory_unix
  - chmod +x /usr/local/bin/ocinventory
- - chown ${bastion_ssh_user}:${bastion_ssh_user} /root/oc-install.sh
- - mv /root/oc-install.sh /home/${bastion_ssh_user}/oc-install.sh
- - chown ${bastion_ssh_user}:${bastion_ssh_user} /root/template-inventory.yml
- - mv /root/template-inventory.yml /home/${bastion_ssh_user}/template-inventory.yml
  - chown ${bastion_ssh_user}:${bastion_ssh_user} /root/platform_id_rsa
  - mkdir -p /home/${bastion_ssh_user}/.ssh
  - mv /root/platform_id_rsa /home/${bastion_ssh_user}/.ssh/id_rsa

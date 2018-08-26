@@ -17,6 +17,9 @@ key:
 sshspec:
 	@TF_DATA_DIR=example/$(CLUSTER_CONFIG) terraform output -module openshift_platform bastion_ssh
 
+csr:
+	@TF_DATA_DIR=example/$(CLUSTER_CONFIG) terraform output -module openshift_platform.domain certificate_pem
+
 master-url:
 	@TF_DATA_DIR=example/$(CLUSTER_CONFIG) terraform output -module openshift_platform.infrastructure master_url
 

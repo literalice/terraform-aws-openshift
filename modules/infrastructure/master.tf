@@ -15,6 +15,7 @@ resource "aws_launch_configuration" "master" {
   security_groups = [
     "${aws_security_group.node.id}",
     "${aws_security_group.master_public.id}",
+    "${aws_security_group.platform_public.id}",
   ]
 
   key_name             = "${aws_key_pair.platform.id}"

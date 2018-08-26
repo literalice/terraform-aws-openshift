@@ -48,4 +48,8 @@ variable "platform_domain" {
   default = ""
 }
 
+variable "platform_domain_administrator_email" {
+  default = ""
+}
+
 variable "image_id" {}

@@ -22,3 +22,7 @@ output "master_endpoints" {
 output "master_url" {
   value = "https://${local.platform_domain}"
 }
+
+output "platform_domain" {
+  value = "${local.platform_domain}"
+}

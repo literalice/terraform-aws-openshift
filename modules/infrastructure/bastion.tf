@@ -13,14 +13,8 @@ data "template_file" "bastion_init" {
     bastion_ssh_user = "${local.bastion_ssh_user}"
 
     openshift_major_version = "${var.openshift_major_version}"
-    template_inventory      = "${base64encode(data.template_file.template_inventory.rendered)}"
-    oc_install              = "${base64encode(data.template_file.installer_template.rendered)}"
     platform_id_rsa         = "${base64encode(data.tls_public_key.platform.private_key_pem)}"
   }
-}
-
-output "templateinventory" {
-  value = "${data.template_file.bastion_init.rendered}"
 }
 
 resource "aws_iam_instance_profile" "bastion" {
@@ -59,7 +53,7 @@ resource "aws_launch_configuration" "bastion" {
 }
 
 resource "aws_autoscaling_group" "bastion" {
-  vpc_zone_identifier       = ["${data.aws_subnet.public.*.id}"]
+  vpc_zone_identifier       = ["${data.aws_subnet.public.*.id[0]}"]
   name                      = "${var.platform_name}-bastion"
   max_size                  = "1"
   min_size                  = "1"

@@ -16,12 +16,7 @@ resource "null_resource" "openshift_check" {
     host        = "${data.aws_instance.bastion.public_ip}"
   }
 
-  triggers = {
-    bastion_instance_id = "${data.aws_instance.bastion.id}"
-    uuid                = "${uuid()}"
-  }
-
-  depends_on = ["module.infrastructure"]
+  depends_on = ["null_resource.openshift_installer"]
 }
 
 resource "null_resource" "openshift" {
@@ -38,9 +33,23 @@ resource "null_resource" "openshift" {
     host        = "${data.aws_instance.bastion.public_ip}"
   }
 
-  triggers = {
-    bastion_instance_id = "${data.aws_instance.bastion.id}"
+  depends_on = ["null_resource.openshift_installer"]
+}
+
+resource "null_resource" "openshift_admin" {
+  provisioner "remote-exec" {
+    inline = [
+      "export ANSIBLE_HOST_KEY_CHECKING=False",
+      "ansible 'masters[0]' -i ~/inventory.yml -a 'oc adm policy add-cluster-role-to-user cluster-admin ${join(" ", var.openshift_cluster_admin_users)}'",
+    ]
   }
 
-  depends_on = ["module.network", "module.infrastructure", "module.domain"]
+  connection {
+    type        = "ssh"
+    user        = "${module.infrastructure.bastion_ssh_user}"
+    private_key = "${module.infrastructure.platform_private_key}"
+    host        = "${data.aws_instance.bastion.public_ip}"
+  }
+
+  depends_on = ["null_resource.openshift"]
 }

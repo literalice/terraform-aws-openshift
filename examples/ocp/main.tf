@@ -16,7 +16,8 @@ module "openshift_platform" {
   rhn_username            = "${var.rhn_username}"
   rhn_password            = "${var.rhn_password}"
 
-  platform_domain = "${var.platform_domain}"
+  platform_domain                     = "${var.platform_domain}"
+  platform_domain_administrator_email = "${var.platform_domain_administrator_email}"
 
   bastion_image_id = "${var.image_id}"
   node_image_id    = "${var.image_id}"
