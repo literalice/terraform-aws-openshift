@@ -20,8 +20,11 @@ sshspec:
 csr:
 	@cd examples/$(CLUSTER_CONFIG); terraform output -module openshift_platform.domain certificate_pem
 
+dns-nameservers:
+	@cd examples/$(CLUSTER_CONFIG); terraform output -module openshift_platform.domain public_dns_nameservers
+
 master-url:
-	@TF_DATA_DIR=example/$(CLUSTER_CONFIG) terraform output -module openshift_platform.infrastructure master_url
+	@cd examples/$(CLUSTER_CONFIG); terraform output -module openshift_platform.infrastructure master_url
 
 network:
 	@echo "Builds network for OpenShift"

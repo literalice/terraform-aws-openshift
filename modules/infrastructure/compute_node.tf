@@ -6,7 +6,7 @@ resource "aws_iam_instance_profile" "compute_node" {
 resource "aws_launch_configuration" "compute_node" {
   name_prefix   = "${var.platform_name}-compute-node-"
   image_id      = "${local.node_image_id}"
-  instance_type = "${var.compute_instance_type}"
+  instance_type = "${var.compute_node_instance_type}"
 
   spot_price = "${var.compute_node_spot_price}"
 

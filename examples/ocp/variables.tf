@@ -14,12 +14,12 @@ variable "public_cidrs" {
   default = ["0.0.0.0/0"]
 }
 
-variable "compute_node_count" {
-  default = 2
+variable "bastion_instance_type" {
+  default = "m4.large"
 }
 
-variable "infra_node_count" {
-  default = 1
+variable "bastion_spot_price" {
+  default = ""
 }
 
 variable "master_count" {
@@ -30,12 +30,20 @@ variable "master_instance_type" {
   default = "m4.large"
 }
 
-variable "infra_instance_type" {
+variable "master_spot_price" {
+  default = ""
+}
+
+variable "compute_node_count" {
+  default = 2
+}
+
+variable "compute_node_instance_type" {
   default = "m4.large"
 }
 
-variable "compute_instance_type" {
-  default = "m4.large"
+variable "compute_node_spot_price" {
+  default = ""
 }
 
 variable "rh_subscription_pool_id" {}

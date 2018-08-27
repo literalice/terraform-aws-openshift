@@ -6,7 +6,7 @@ It supports OCP and Origin.
 
 ## Prerequisites
 
-If you are building a OCP cluster, 
+If you are building a OCP cluster,
 
 * you need to know a subscription pool id for OCP.
 * you need to get access of Gold Images of Red Hat Atomic Host through the Red Hat Cloud Access program. See also https://access.redhat.com/articles/2962171
@@ -48,15 +48,13 @@ You will be asked some parameters for configuring the cluster infrastructure. Se
 
 You need to set up the domain names for install and access the cluster.
 
-As a result of above commands, you should got the output:
+`make dns-nameservers`
 
 ```
-public_dns_nameservers = [
-    ns-xxx.awsdns-xx.org,
-    ns-xxx.awsdns-xx.co.uk,
-    ns-xxx.awsdns-xx.com,
-    ns-xxx.awsdns-xx.net
-]
+ ns-xxx.awsdns-xx.org,
+ ns-xxx.awsdns-xx.co.uk,
+ ns-xxx.awsdns-xx.com,
+ ns-xxx.awsdns-xx.net
 ```
 
 You can set the name servers in a NS record of your name server for delegation.
@@ -75,7 +73,15 @@ After that, you can access the master of the cluster via URL provided as output 
 
 ### Limitations
 
-If you have some errors on running the above commands, please retry after a while.
+At plan phase, you will find the below diff, but you can apply them without any changes.
+
+```
+~ module.openshift_platform.module.domain.aws_route53_record.master_public
+    records.#:                   "" => <computed>
+
+~ module.openshift_platform.module.domain.aws_route53_record.router_public
+    records.#:                   "" => <computed>
+```
 
 ## direnv
 Instead of inputing values in interaction, you can use [direnv](https://github.com/direnv/direnv) and .envrc file for providing configuration.
@@ -85,11 +91,24 @@ Instead of inputing values in interaction, you can use [direnv](https://github.c
 export AWS_DEFAULT_REGION=ap-northeast-1
 export AWS_PROFILE=xxxx
 
+# AMI ID(Gold Image ID / CentOS Image ID)
+export TF_VAR_image_id=ami-8e8847f1
+
+# Node Spec
+
+export TF_VAR_bastion_instance_type=m4.large
+export TF_VAR_master_instance_type=m4.large
+export TF_VAR_compute_node_instance_type=m4.large
+
+export TF_VAR_compute_node_count=2
+
+# If you want to use spot instances for saving cost, specify spot price.
+export TF_VAR_bastion_spot_price=0.1
+export TF_VAR_master_spot_price=0.1
+export TF_VAR_compute_node_spot_price=0.1
+
 # The name of the cluster that is used for tagging some resources
 export TF_VAR_platform_name=sample-platform
-
-# AWS key pair that is used for instances of the cluster includes the bastion
-export TF_VAR_key_pair_private_key_path="${HOME}/.ssh/sample-platform"
 
 # Red Hat Network credential for registration system of the OpenShift Container Platform cluster
 export TF_VAR_rhn_username="xxx@example.com"
@@ -99,7 +118,10 @@ export TF_VAR_rhn_password="xxxxxxxxxxx"
 export TF_VAR_rh_subscription_pool_id="xxxxxxxx"
 
 # Public DNS subdomain for access to services served in the cluster
-export TF_VAR_platform_default_subdomain=sample-platform.example.com
+export TF_VAR_platform_domain=sample-platform.example.com
+# Email used to register Let's encrypt account.
+export TF_VAR_platform_domain_administrator_email=administrator@example.com
+
 ```
 
 ## Tips
@@ -107,7 +129,7 @@ export TF_VAR_platform_default_subdomain=sample-platform.example.com
 ### Open OpenShift Web Console
 
 ```bash
-open `terraform output master_dns`
+open `make master-url`
 ```
 
 ### SSH to Bastion
