@@ -46,7 +46,8 @@ You will be asked some parameters for configuring the cluster infrastructure. Se
 
 ### Public DNS setting
 
-You need to set up the domain names for install and access the cluster.
+If you want to use your named domain, you need to set up the domain names for install and access the cluster.
+If not, xx.xx.xx.xx.nip.io address is used.
 
 `make dns-nameservers`
 
@@ -118,6 +119,7 @@ export TF_VAR_rhn_password="xxxxxxxxxxx"
 export TF_VAR_rh_subscription_pool_id="xxxxxxxx"
 
 # Public DNS subdomain for access to services served in the cluster
+# If it isn't set, a nip address is used.
 export TF_VAR_platform_domain=sample-platform.example.com
 # Email used to register Let's encrypt account.
 export TF_VAR_platform_domain_administrator_email=administrator@example.com

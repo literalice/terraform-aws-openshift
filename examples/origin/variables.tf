@@ -38,7 +38,7 @@ variable "compute_node_count" {
   default = 2
 }
 
-variable "compute_instance_type" {
+variable "compute_node_instance_type" {
   default = "m4.large"
 }
 

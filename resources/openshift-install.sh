@@ -22,6 +22,10 @@ if [ -z $UPSTREAM ]; then
     ansible all -i $HOME/inventory.yml -a 'subscription-manager repos --disable="*"'
     ansible all -i $HOME/inventory.yml -a 'subscription-manager repos --enable="rhel-7-server-rpms" --enable="rhel-7-server-extras-rpms" --enable="rhel-7-fast-datapath-rpms" --enable="rhel-7-server-ansible-2.4-rpms"'
     ansible all -i $HOME/inventory.yml -a 'subscription-manager repos --enable="rhel-7-server-ose-${openshift_major_version}-rpms"'
+else
+    ansible all -i $HOME/inventory.yml -m yum -a 'name=wget,git,net-tools,bind-utils,yum-utils,iptables-services,bridge-utils,bash-completion,kexec-tools,sos,psacct,atomic state=present'
+    ansible all -i $HOME/inventory.yml -m yum -a 'name=docker-1.13.1 state=present'
+    ansible all -i $HOME/inventory.yml -m systemd -a 'name=docker state=started enabled=yes'
 fi
 
 ansible-playbook -i $HOME/inventory.yml /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml -vvv | tee ansible-$(date +%Y%m%d%H%M%S)-prerequisites.log

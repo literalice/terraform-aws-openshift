@@ -6,16 +6,15 @@ write_files:
     path: /root/platform_id_rsa
     permissions: '0600'
 runcmd:
+ - yum -y install git vim httpd-tools java-1.8.0-openjdk-headless python-passlib patch
+ - yum -y update
  - yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
  - sed -i -e "s/^enabled=1/enabled=0/" /etc/yum.repos.d/epel.repo
- - yum -y install wget git net-tools bind-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct
- - yum -y --enablerepo=epel install ansible pyOpenSSL vim
- - rpm -Uvh https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.4.3.0-1.el7.ans.noarch.rpm
- - yum update
+ - yum -y --enablerepo=epel install ansible pyOpenSSL
  - git clone https://github.com/openshift/openshift-ansible
  - mkdir -p /usr/share/ansible/
  - mv openshift-ansible /usr/share/ansible/
- - cd /usr/share/ansible/openshift-ansible && git checkout -b release-${openshift_major_version} origin/release-${openshift_major_version}
+ - cd /usr/share/ansible/openshift-ansible && git checkout release-${openshift_major_version}
  - curl -L -o /usr/local/bin/ocinventory https://github.com/literalice/openshift-inventory-utils/releases/download/v0.1/ocinventory_unix
  - chmod +x /usr/local/bin/ocinventory
  - chown ${bastion_ssh_user}:${bastion_ssh_user} /root/platform_id_rsa
