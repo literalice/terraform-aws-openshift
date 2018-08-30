@@ -137,7 +137,5 @@ open `make master-url`
 ### SSH to Bastion
 
 ```
-make key > /tmp/.platform_private_key
-chmod 600 /tmp/.platform_private_key
-ssh `make sshspec` -i /tmp/.platform_private_key
+make ssh
 ```

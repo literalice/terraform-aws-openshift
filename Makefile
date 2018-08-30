@@ -12,10 +12,14 @@ test:
 	@cd examples/$(CLUSTER_CONFIG); terraform apply -target null_resource.openshift_check
 
 key:
-	@cd examples/$(CLUSTER_CONFIG); terraform output -module openshift_platform platform_private_key
+	@cd examples/$(CLUSTER_CONFIG); terraform output -module openshift_platform platform_private_key > /tmp/.$(TF_VAR_platform_name).key
+	@chmod 600 /tmp/.$(TF_VAR_platform_name).key
 
 sshspec:
 	@cd examples/$(CLUSTER_CONFIG); terraform output -module openshift_platform bastion_ssh
+
+ssh: key
+	@ssh `make sshspec` -i /tmp/.$(TF_VAR_platform_name).key
 
 csr:
 	@cd examples/$(CLUSTER_CONFIG); terraform output -module openshift_platform.domain certificate_pem
