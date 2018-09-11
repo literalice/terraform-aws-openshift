@@ -35,6 +35,29 @@ OSEv3:
     openshift_metrics_hawkular_openshift_agent_image: "openshift3/metrics-hawkular-openshift-agent:v${openshift_major_version}"
     openshift_metrics_heapster_image: "openshift3/metrics-heapster:v${openshift_major_version}"
     openshift_metrics_schema_installer_image: "openshift3/metrics-schema-installer:v${openshift_major_version}"
+    openshift_node_kubelet_args:
+      eviction-hard:
+      - memory.available<4%
+      - nodefs.available<4%
+      - nodefs.inodesFree<4%
+      - imagefs.available<4%
+      - imagefs.inodesFree<4%
+      eviction-soft:
+      - memory.available<8%
+      - nodefs.available<8%
+      - nodefs.inodesFree<8%
+      - imagefs.available<8%
+      - imagefs.inodesFree<8%
+      eviction-soft-grace-period:
+      - memory.available=1m30s
+      - nodefs.available=1m30s
+      - nodefs.inodesFree=1m30s
+      - imagefs.available=1m30s
+      - imagefs.inodesFree=1m30s
+      kube-reserved:
+      - cpu=100m,memory=100Mi
+      system-reserved:
+      - cpu=100m,memory=100Mi
     openshift_master_admission_plugin_config: '{"ValidatingAdmissionWebhook": {"configuration": {"apiVersion": "v1", "kind": "DefaultAdmissionConfig", "disable": false}}, "MutatingAdmissionWebhook": { "configuration": { "apiVersion": "v1", "kind": "DefaultAdmissionConfig", "disable": false }}}'
 ${openshift_deployment_type == "openshift-enterprise" ? "" : "#"}    osm_use_cockpit: true
 ${openshift_deployment_type == "openshift-enterprise" ? "" : "#"}    osm_cockpit_plugins: ['cockpit-kubernetes']
