@@ -30,6 +30,11 @@ OSEv3:
     openshift_logging_es_memory_limit: 512M
     openshift_metrics_install_metrics: true
     openshift_metrics_cassandra_storage_type: dynamic
+    openshift_metrics_cassandra_image: "openshift3/metrics-cassandra:v${openshift_major_version}"
+    openshift_metrics_hawkular_metrics_image: "openshift3/metrics-hawkular-metrics:v${openshift_major_version}"
+    openshift_metrics_hawkular_openshift_agent_image: "openshift3/metrics-hawkular-openshift-agent:v${openshift_major_version}"
+    openshift_metrics_heapster_image: "openshift3/metrics-heapster:v${openshift_major_version}"
+    openshift_metrics_schema_installer_image: "openshift3/metrics-schema-installer:v${openshift_major_version}"
 ${openshift_deployment_type == "openshift-enterprise" ? "" : "#"}    osm_use_cockpit: true
 ${openshift_deployment_type == "openshift-enterprise" ? "" : "#"}    osm_cockpit_plugins: ['cockpit-kubernetes']
     openshift_master_overwrite_named_certificates: ${named_certificate}
