@@ -13,7 +13,8 @@ write_files:
     permissions: '0600'
 runcmd:
  - subscription-manager repos --disable="*"
- - subscription-manager repos --enable="rhel-7-server-rpms" --enable="rhel-7-server-extras-rpms" --enable="rhel-7-fast-datapath-rpms" --enable="rhel-7-server-ansible-2.4-rpms"
+ - yum-config-manager --disable \*
+ - subscription-manager repos --enable="rhel-7-server-rpms" --enable="rhel-7-server-extras-rpms" --enable="rhel-7-server-ansible-2.6-rpms"
  - subscription-manager repos --enable="rhel-7-server-ose-${openshift_major_version}-rpms"
  - yum -y install openshift-ansible atomic-openshift-clients vim
  - curl -L -o /usr/local/bin/ocinventory https://github.com/literalice/openshift-inventory-utils/releases/download/v0.1/ocinventory_unix

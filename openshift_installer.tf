@@ -4,6 +4,8 @@ data "template_file" "template_inventory" {
   vars {
     platform_name                  = "${var.platform_name}"
     ansible_user                   = "${module.infrastructure.bastion_ssh_user}"
+    rhn_username                   = "${var.rhn_username}"
+    rhn_password                   = "${var.rhn_password}"
     platform_domain                = "${module.infrastructure.platform_domain}"
     openshift_deployment_type      = "${var.upstream ? "origin" : "openshift-enterprise"}"
     openshift_major_version        = "${var.openshift_major_version}"

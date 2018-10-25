@@ -75,7 +75,7 @@ variable "rhn_password" {
 }
 
 variable "openshift_major_version" {
-  default = "3.10"
+  default = "3.11"
 }
 
 variable "openshift_cluster_admin_users" {

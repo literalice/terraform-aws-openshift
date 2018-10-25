@@ -16,7 +16,7 @@ key:
 	@chmod 600 /tmp/.$(TF_VAR_platform_name).key
 
 sshspec:
-	@cd examples/$(CLUSTER_CONFIG); terraform output -module openshift_platform bastion_ssh
+	@cd examples/$(CLUSTER_CONFIG); echo `terraform output -module openshift_platform.infrastructure bastion_ssh_user`@`terraform output -module openshift_platform.infrastructure bastion_endpoint`
 
 ssh: key
 	@ssh `make sshspec` -i /tmp/.$(TF_VAR_platform_name).key

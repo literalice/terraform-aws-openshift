@@ -6,6 +6,10 @@ output "bastion_ssh_user" {
   value = "${local.bastion_ssh_user}"
 }
 
+output "bastion_ssh" {
+  value = "${local.bastion_ssh_user}@${data.aws_instances.bastion.ids[0]}"
+}
+
 output "bastion_endpoint" {
   value = "${data.aws_instances.bastion.public_ips[0]}"
 }
