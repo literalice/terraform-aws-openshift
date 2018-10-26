@@ -51,12 +51,10 @@ OSEv3:
       - cpu=100m,memory=100Mi
       system-reserved:
       - cpu=100m,memory=100Mi
-    oreg_auth_user: "${rhn_username}"
-    oreg_auth_password: "${rhn_password}"
     openshift_certificate_expiry_warning_days: 30
     openshift_master_admission_plugin_config: '{ "MutatingAdmissionWebhook": { "configuration": { "apiVersion": "apiserver.config.k8s.io/v1alpha1", "kubeConfigFile": "/dev/null", "kind": "WebhookAdmission" } }, "ValidatingAdmissionWebhook": { "configuration": { "apiVersion": "apiserver.config.k8s.io/v1alpha1", "kubeConfigFile": "/dev/null", "kind": "WebhookAdmission" } } }'
-${openshift_deployment_type == "openshift-enterprise" ? "" : "#"}    osm_use_cockpit: true
-${openshift_deployment_type == "openshift-enterprise" ? "" : "#"}    osm_cockpit_plugins: ['cockpit-kubernetes']
+${openshift_deployment_type == "openshift-enterprise" ? "" : "#"}    oreg_auth_user: "${rhn_username}"
+${openshift_deployment_type == "openshift-enterprise" ? "" : "#"}    oreg_auth_password: "${rhn_password}"
     openshift_master_overwrite_named_certificates: ${named_certificate}
 ${named_certificate ? "" : "#"}    openshift_master_named_certificates:
 ${named_certificate ? "" : "#"}    - certfile: '/home/${ansible_user}/platform_cert.pem'

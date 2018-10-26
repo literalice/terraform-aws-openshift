@@ -1,0 +1,9 @@
+[OSEv3:vars]
+ansible_ssh_user=${ansible_user}
+ansible_become=yes
+openshift_deployment_type=${openshift_deployment_type}
+openshift_clusterid=${platform_name}
+
+[masters]
+[etcd]
+[nodes]

@@ -1,0 +1,30 @@
+ansible_ssh_user: ${ansible_user}
+ansible_become: true
+openshift_deployment_type: ${openshift_deployment_type}
+openshift_clusterid: ${platform_name}
+openshift_aws_create_vpc: false 
+openshift_aws_region: ${platform_aws_region}
+openshift_aws_vpc_name: ${platform_name}
+openshift_aws_subnet_az: ${platform_aws_az}
+openshift_aws_create_security_groups: false 
+openshift_aws_ssh_key_name: ${platform_key_name}
+openshift_aws_base_ami: ${platform_base_ami}
+openshift_aws_create_s3: false 
+openshift_aws_build_ami_group: ${security_group}
+container_runtime_docker_storage_type: overlay2 
+container_runtime_docker_storage_setup_device: /dev/xvdb
+openshift_aws_vpc: 
+  name: "{{ openshift_aws_vpc_name }}"
+  cidr: ${platform_vpc_cidr}
+  subnets:
+    ${platform_aws_region}:
+    - cidr: ${platform_public_subnet_cidr}
+      az: ${platform_aws_az}
+openshift_aws_ami_build_set_gquota_on_slashfs: true 
+openshift_use_crio: true
+openshift_use_crio_only: true
+openshift_node_group_name: node-config-compute-crio
+openshift_crio_enable_docker_gc: true
+rhsub_user: ${rhn_username}
+rhsub_pass: ${rhn_password}
+rhsub_pool: ${rh_subscription_pool_id}

@@ -2,10 +2,21 @@ locals {
   bastion_ssh_user = "${(var.upstream) ? "centos" : "ec2-user"}"
 }
 
+resource "aws_eip" "bastion" {
+  vpc = true
+
+  tags = "${map(
+    "kubernetes.io/cluster/${var.platform_name}", "owned",
+    "Name", "${var.platform_name}-bastion",
+    "Role", "bastion"
+  )}"
+}
+
 data "template_file" "bastion_init" {
   template = "${(var.upstream) ? file("${path.module}/resources/origin-bastion-init.yml") : file("${path.module}/resources/bastion-init.yml")}"
 
   vars {
+    platform_name           = "${var.platform_name}"
     rhn_username            = "${var.rhn_username}"
     rhn_password            = "${var.rhn_password}"
     rh_subscription_pool_id = "${var.rh_subscription_pool_id}"
@@ -24,7 +35,7 @@ resource "aws_iam_instance_profile" "bastion" {
 
 resource "aws_launch_configuration" "bastion" {
   name_prefix   = "${var.platform_name}-bastion-"
-  image_id      = "${local.node_image_id}"
+  image_id      = "${data.aws_ami.base.id}"
   instance_type = "${var.bastion_instance_type}"
 
   spot_price = "${var.bastion_spot_price}"
@@ -72,22 +83,4 @@ resource "aws_autoscaling_group" "bastion" {
   timeouts {
     delete = "15m"
   }
-}
-
-data "aws_instances" "bastion" {
-  instance_tags {
-    Name = "${var.platform_name}-bastion"
-  }
-
-  filter {
-    name   = "vpc-id"
-    values = ["${data.aws_vpc.platform.id}"]
-  }
-
-  filter {
-    name   = "instance-state-name"
-    values = ["running"]
-  }
-
-  depends_on = ["aws_autoscaling_group.bastion"]
 }

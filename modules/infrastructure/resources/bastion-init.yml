@@ -1,6 +1,5 @@
 #cloud-config
-locale: ja_JP.UTF-8
-
+output: { all: "| tee -a /var/log/cloud-init-output.log" }
 rh_subscription:
   username: ${rhn_username}
   password: '${rhn_password}'
@@ -11,9 +10,40 @@ write_files:
     encoding: base64
     path: /root/platform_id_rsa
     permissions: '0600'
+-  content: |
+    #!/bin/bash -ex
+    REGION=`curl -s http://169.254.169.254/latest/meta-data/local-hostname | cut -d '.' -f2`
+    export AWS_DEFAULT_REGION=$${REGION}
+    INSTANCE_ID=`curl http://169.254.169.254/latest/meta-data/instance-id`
+    for ALLOC_ID in `aws ec2 describe-addresses --filter "Name=domain,Values=vpc" "Name=tag:Role,Values=bastion" "Name=tag:kubernetes.io/cluster/${platform_name},Values=owned" | /usr/local/bin/jq '.Addresses[].AllocationId' | cut -d '"' -f 2`
+    do
+      aws ec2 associate-address --instance-id $${INSTANCE_ID} --allocation-id $${ALLOC_ID} --no-allow-reassociation
+      STATUS=$$?
+      if [ 0 = $${STATUS} ] ; then
+        exit 0
+      fi
+    done
+   path: /root/arrocate-eip.sh
+   permissions: '0700'
+-  content: |
+    #!/bin/bash -ex
+    while [ ! -f /root/.provisioning-finished ]
+    do
+        echo -n "#"
+        sleep 1
+    done
+   path: /root/ensure-provisioned.sh
+   permissions: '0777'
+
 runcmd:
+ - curl -o /usr/local/bin/jq -L https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 && chmod +x /usr/local/bin/jq
+ - curl -kL https://bootstrap.pypa.io/get-pip.py | python
+ - pip install awscli --upgrade
+ - pip install boto3 --upgrade
+ - pip install boto --upgrade
+ - sh /root/arrocate-eip.sh
+ - subscription-manager refresh
  - subscription-manager repos --disable="*"
- - yum-config-manager --disable \*
  - subscription-manager repos --enable="rhel-7-server-rpms" --enable="rhel-7-server-extras-rpms" --enable="rhel-7-server-ansible-2.6-rpms"
  - subscription-manager repos --enable="rhel-7-server-ose-${openshift_major_version}-rpms"
  - yum -y install openshift-ansible atomic-openshift-clients vim
@@ -22,3 +52,4 @@ runcmd:
  - chown ${bastion_ssh_user}:${bastion_ssh_user} /root/platform_id_rsa
  - mkdir -p /home/${bastion_ssh_user}/.ssh
  - mv /root/platform_id_rsa /home/${bastion_ssh_user}/.ssh/id_rsa
+ - touch /root/.provisioning-finished && chmod 644 /root/.provisioning-finished

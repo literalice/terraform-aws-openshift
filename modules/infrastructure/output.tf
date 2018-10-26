@@ -1,17 +1,13 @@
-output "bastion_instance_id" {
-  value = "${data.aws_instances.bastion.ids[0]}"
-}
-
 output "bastion_ssh_user" {
   value = "${local.bastion_ssh_user}"
 }
 
 output "bastion_ssh" {
-  value = "${local.bastion_ssh_user}@${data.aws_instances.bastion.ids[0]}"
+  value = "${local.bastion_ssh_user}@${aws_eip.bastion.public_ip}"
 }
 
 output "bastion_endpoint" {
-  value = "${data.aws_instances.bastion.public_ips[0]}"
+  value = "${aws_eip.bastion.public_ip}"
 }
 
 output "platform_private_key" {

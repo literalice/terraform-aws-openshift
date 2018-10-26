@@ -39,13 +39,9 @@ variable "rhn_username" {}
 variable "rhn_password" {}
 variable "rh_subscription_pool_id" {}
 
-variable "master_count" {
-  default = 1
-}
+variable "master_count" {}
 
-variable "compute_node_count" {
-  default = 2
-}
+variable "compute_node_count" {}
 
 variable "bastion_instance_type" {
   default = "t2.medium"

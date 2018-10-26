@@ -1,5 +1,5 @@
 output "bastion_ssh" {
-  value       = "${module.infrastructure.bastion_ssh_user}@${module.infrastructure.bastion_endpoint}"
+  value       = "${module.infrastructure.bastion_ssh}"
   description = "Bastion SSH info for login. 'ssh `terraform output bastion_ssh`'"
 }
 

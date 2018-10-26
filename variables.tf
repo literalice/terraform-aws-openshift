@@ -22,13 +22,9 @@ variable "bastion_image_id" {}
 
 variable "node_image_id" {}
 
-variable "master_count" {
-  default = 1
-}
+variable "master_count" {}
 
-variable "compute_node_count" {
-  default = 2
-}
+variable "compute_node_count" {}
 
 variable "bastion_instance_type" {
   default = "m4.large"
