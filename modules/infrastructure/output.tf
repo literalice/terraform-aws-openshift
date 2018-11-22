@@ -16,7 +16,7 @@ output "platform_private_key" {
 }
 
 output "master_endpoints" {
-  value = ["${data.aws_instance.master.public_ip}"]
+  value = ["${aws_eip.master.*.public_ip}"]
 }
 
 output "master_url" {

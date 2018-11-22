@@ -9,6 +9,7 @@ OSEv3:
   vars:
     timeout: 60
     ansible_user: ${ansible_user}
+    ansible_ssh_user: ${ansible_user}
     ansible_become: true
     openshift_deployment_type: ${openshift_deployment_type}
     openshift_release: "${openshift_major_version}"
@@ -23,11 +24,14 @@ OSEv3:
     openshift_master_cluster_hostname: master.${platform_name}.internal
     openshift_master_cluster_public_hostname: ${platform_domain}
     openshift_master_default_subdomain: ${platform_domain}
+    openshift_master_bootstrap_auto_approve: true
     openshift_cloudprovider_kind: aws
     openshift_clusterid: ${platform_name}
     openshift_logging_install_logging: true
     openshift_logging_es_pvc_dynamic: true
-    openshift_logging_es_memory_limit: 512M
+    openshift_logging_es_memory_limit: 1024M
+    openshift_logging_es_nodeselector:
+      node-role.kubernetes.io/infra: "true"
     openshift_node_kubelet_args:
       eviction-hard:
       - memory.available<4%
@@ -52,9 +56,14 @@ OSEv3:
       system-reserved:
       - cpu=100m,memory=100Mi
     openshift_certificate_expiry_warning_days: 30
-    openshift_master_admission_plugin_config: '{ "MutatingAdmissionWebhook": { "configuration": { "apiVersion": "apiserver.config.k8s.io/v1alpha1", "kubeConfigFile": "/dev/null", "kind": "WebhookAdmission" } }, "ValidatingAdmissionWebhook": { "configuration": { "apiVersion": "apiserver.config.k8s.io/v1alpha1", "kubeConfigFile": "/dev/null", "kind": "WebhookAdmission" } } }'
+    openshift_master_admission_plugin_config: '{ "MutatingAdmissionWebhook": { "configuration": { "apiVersion": "apiserver.config.k8s.io/v1alpha1", "kubeConfigFile": "/etc/origin/master/admin.kubeconfig", "kind": "WebhookAdmission" } }, "ValidatingAdmissionWebhook": { "configuration": { "apiVersion": "apiserver.config.k8s.io/v1alpha1", "kubeConfigFile": "/etc/origin/master/admin.kubeconfig", "kind": "WebhookAdmission" } } }'
 ${openshift_deployment_type == "openshift-enterprise" ? "" : "#"}    oreg_auth_user: "${rhn_username}"
 ${openshift_deployment_type == "openshift-enterprise" ? "" : "#"}    oreg_auth_password: "${rhn_password}"
+${openshift_deployment_type == "openshift-enterprise" ? "" : "#"}    openshift_additional_registry_credentials:
+${openshift_deployment_type == "openshift-enterprise" ? "" : "#"}    - host: registry.connect.redhat.com
+${openshift_deployment_type == "openshift-enterprise" ? "" : "#"}      user: "${rhn_username}"
+${openshift_deployment_type == "openshift-enterprise" ? "" : "#"}      password: "${rhn_password}"
+${openshift_deployment_type == "openshift-enterprise" ? "" : "#"}      test_image: mongodb/enterprise-operator:0.3.2
     openshift_master_overwrite_named_certificates: ${named_certificate}
 ${named_certificate ? "" : "#"}    openshift_master_named_certificates:
 ${named_certificate ? "" : "#"}    - certfile: '/home/${ansible_user}/platform_cert.pem'

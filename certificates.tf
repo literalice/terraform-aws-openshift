@@ -20,7 +20,7 @@ resource "null_resource" "certificate_files" {
     type        = "ssh"
     user        = "${module.infrastructure.bastion_ssh_user}"
     private_key = "${module.infrastructure.platform_private_key}"
-    host        = "${data.aws_instance.bastion.public_ip}"
+    host        = "${module.infrastructure.bastion_endpoint}"
   }
 
   depends_on = ["module.infrastructure", "module.domain"]

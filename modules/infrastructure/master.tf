@@ -1,3 +1,58 @@
+resource "aws_eip" "master" {
+  count = "${var.master_count}"
+
+  vpc = true
+
+  tags = "${map(
+    "kubernetes.io/cluster/${var.platform_name}", "owned",
+    "Name", "${var.platform_name}-master",
+    "Role", "master"
+  )}"
+}
+
+# Create a internal load balancer
+resource "aws_elb" "master_internal" {
+  name     = "${var.platform_name}-master-internal"
+  subnets  = ["${data.aws_subnet.private.*.id}"]
+  internal = true
+
+  security_groups = [
+    "${aws_security_group.node.id}",
+  ]
+
+  listener {
+    instance_port     = 8443
+    instance_protocol = "tcp"
+    lb_port           = 8443
+    lb_protocol       = "tcp"
+  }
+
+  health_check {
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    timeout             = 3
+    target              = "TCP:22"
+    interval            = 30
+  }
+
+  cross_zone_load_balancing   = true
+  idle_timeout                = 400
+  connection_draining         = true
+  connection_draining_timeout = 400
+
+  tags = "${map(
+    "kubernetes.io/cluster/${var.platform_name}", "owned",
+    "Name", "${var.platform_name}-master")}"
+}
+
+data "template_file" "master_init" {
+  template = "${file("${path.module}/resources/master-init.yml")}"
+
+  vars {
+    platform_name = "${var.platform_name}"
+  }
+}
+
 resource "aws_iam_instance_profile" "master" {
   name = "${var.platform_name}-master-profile"
   role = "${aws_iam_role.master.name}"
@@ -5,12 +60,10 @@ resource "aws_iam_instance_profile" "master" {
 
 resource "aws_launch_configuration" "master" {
   name_prefix   = "${var.platform_name}-master-"
-  image_id      = "${local.node_image_id}"
+  image_id      = "${data.aws_ami.primed.image_id}"
   instance_type = "${var.master_instance_type}"
 
   spot_price = "${var.master_spot_price}"
-
-  associate_public_ip_address = true
 
   security_groups = [
     "${aws_security_group.node.id}",
@@ -18,11 +71,16 @@ resource "aws_launch_configuration" "master" {
     "${aws_security_group.platform_public.id}",
   ]
 
+  associate_public_ip_address = true
+
   key_name             = "${aws_key_pair.platform.id}"
   iam_instance_profile = "${aws_iam_instance_profile.master.name}"
 
+  user_data = "${data.template_file.master_init.rendered}"
+
   lifecycle {
     create_before_destroy = true
+    ignore_changes        = ["image_id"]
   }
 
   root_block_device {
@@ -33,7 +91,7 @@ resource "aws_launch_configuration" "master" {
 }
 
 resource "aws_autoscaling_group" "master" {
-  vpc_zone_identifier       = ["${data.aws_subnet.node.*.id}"]
+  vpc_zone_identifier       = ["${data.aws_subnet.private.*.id}"]
   name                      = "${var.platform_name}-master"
   max_size                  = "${var.master_count}"
   min_size                  = "${var.master_count}"
@@ -42,6 +100,8 @@ resource "aws_autoscaling_group" "master" {
   health_check_grace_period = 300
   force_delete              = true
   launch_configuration      = "${aws_launch_configuration.master.name}"
+
+  load_balancers = ["${aws_elb.master_internal.name}"]
 
   tag {
     key                 = "kubernetes.io/cluster/${var.platform_name}"
@@ -70,26 +130,8 @@ resource "aws_autoscaling_group" "master" {
   timeouts {
     delete = "15m"
   }
-}
 
-data "aws_instances" "master" {
-  instance_tags {
-    Name = "${var.platform_name}-master"
+  lifecycle {
+    create_before_destroy = true
   }
-
-  filter {
-    name   = "vpc-id"
-    values = ["${data.aws_vpc.platform.id}"]
-  }
-
-  filter {
-    name   = "instance-state-name"
-    values = ["running"]
-  }
-
-  depends_on = ["aws_autoscaling_group.master"]
-}
-
-data "aws_instance" "master" {
-  instance_id = "${element(data.aws_instances.master.ids, 0)}"
 }

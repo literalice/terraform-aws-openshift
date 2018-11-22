@@ -21,10 +21,7 @@ openshift_aws_vpc:
     - cidr: ${platform_public_subnet_cidr}
       az: ${platform_aws_az}
 openshift_aws_ami_build_set_gquota_on_slashfs: true 
-openshift_use_crio: true
-openshift_use_crio_only: true
-openshift_node_group_name: node-config-compute-crio
-openshift_crio_enable_docker_gc: true
+openshift_node_group_name: node-config-compute
 rhsub_user: ${rhn_username}
 rhsub_pass: ${rhn_password}
 rhsub_pool: ${rh_subscription_pool_id}

@@ -13,7 +13,7 @@ resource "null_resource" "openshift_check" {
     type        = "ssh"
     user        = "${module.infrastructure.bastion_ssh_user}"
     private_key = "${module.infrastructure.platform_private_key}"
-    host        = "${data.aws_instance.bastion.public_ip}"
+    host        = "${module.infrastructure.bastion_endpoint}"
   }
 
   depends_on = ["null_resource.openshift_installer"]
@@ -23,6 +23,7 @@ resource "null_resource" "openshift" {
   provisioner "remote-exec" {
     inline = [
       "export UPSTREAM=${var.upstream ? "true" : ""}",
+      "sudo /root/ensure-provisioned.sh",
       "sh ~/oc-install.sh",
     ]
   }

@@ -5,7 +5,7 @@ resource "aws_iam_instance_profile" "compute_node" {
 
 resource "aws_launch_configuration" "compute_node" {
   name_prefix   = "${var.platform_name}-compute-node-"
-  image_id      = "${local.node_image_id}"
+  image_id      = "${data.aws_ami.primed.image_id}"
   instance_type = "${var.compute_node_instance_type}"
 
   spot_price = "${var.compute_node_spot_price}"
@@ -21,6 +21,7 @@ resource "aws_launch_configuration" "compute_node" {
 
   lifecycle {
     create_before_destroy = true
+    ignore_changes        = ["image_id"]
   }
 
   root_block_device {
@@ -31,7 +32,7 @@ resource "aws_launch_configuration" "compute_node" {
 }
 
 resource "aws_autoscaling_group" "compute_node" {
-  vpc_zone_identifier       = ["${data.aws_subnet.node.*.id}"]
+  vpc_zone_identifier       = ["${data.aws_subnet.private.*.id}"]
   name                      = "${var.platform_name}-compute-node"
   max_size                  = "${var.compute_node_count}"
   min_size                  = "${var.compute_node_count}"
@@ -67,5 +68,10 @@ resource "aws_autoscaling_group" "compute_node" {
 
   timeouts {
     delete = "15m"
+  }
+
+  lifecycle {
+    create_before_destroy = true
+    ignore_changes        = ["image_id"]
   }
 }

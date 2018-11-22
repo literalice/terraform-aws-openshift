@@ -6,6 +6,7 @@ data "template_file" "template_inventory" {
     ansible_user                   = "${module.infrastructure.bastion_ssh_user}"
     rhn_username                   = "${var.rhn_username}"
     rhn_password                   = "${var.rhn_password}"
+    rh_subscription_pool_id        = "${var.rh_subscription_pool_id}"
     platform_domain                = "${module.infrastructure.platform_domain}"
     openshift_deployment_type      = "${var.upstream ? "origin" : "openshift-enterprise"}"
     openshift_major_version        = "${var.openshift_major_version}"
@@ -21,9 +22,6 @@ data "template_file" "installer_template" {
     platform_name           = "${var.platform_name}"
     platform_aws_region     = "${data.aws_region.current.name}"
     openshift_major_version = "${var.openshift_major_version}"
-    rhn_username            = "${var.rhn_username}"
-    rhn_password            = "${var.rhn_password}"
-    rh_subscription_pool_id = "${var.rh_subscription_pool_id}"
   }
 }
 
@@ -42,7 +40,7 @@ resource "null_resource" "openshift_installer" {
     type        = "ssh"
     user        = "${module.infrastructure.bastion_ssh_user}"
     private_key = "${module.infrastructure.platform_private_key}"
-    host        = "${data.aws_instance.bastion.public_ip}"
+    host        = "${module.infrastructure.bastion_endpoint}"
   }
 
   triggers {
