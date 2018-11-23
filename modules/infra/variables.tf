@@ -15,6 +15,11 @@ variable "operator_cidrs" {
   default = ["0.0.0.0/0"]
 }
 
+variable "public_cidrs" {
+  type    = "list"
+  default = ["0.0.0.0/0"]
+}
+
 variable "use_spot" {
   default = false
 }
@@ -25,4 +30,8 @@ variable "use_community" {
 
 variable "master_count" {
   default = 1
+}
+
+variable "infra_node_count" {
+  default = 0
 }
