@@ -4,3 +4,4 @@ work/
 *.tfstate
 *.tfstate.*
 .envrc
+*.tfvars
