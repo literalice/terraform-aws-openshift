@@ -1,21 +1,17 @@
 # Private subnet: for instances / internal lb
 
 # For Outbound access
-resource "aws_egress_only_internet_gateway" "private_gw" {
-  vpc_id = "${aws_vpc.platform.id}"
-}
-
 locals {
   private_subnet_count = "${length(data.aws_availability_zones.available.names)}"
 }
 
 resource "aws_subnet" "private" {
-  count                           = "${local.private_subnet_count}"
-  vpc_id                          = "${aws_vpc.platform.id}"
-  availability_zone               = "${element(data.aws_availability_zones.available.names, count.index)}"
-  cidr_block                      = "${cidrsubnet(aws_vpc.platform.cidr_block, 3, count.index)}"
-  ipv6_cidr_block                 = "${cidrsubnet(aws_vpc.platform.ipv6_cidr_block, 8, count.index)}"
-  assign_ipv6_address_on_creation = true
+  count             = "${local.private_subnet_count}"
+  vpc_id            = "${aws_vpc.platform.id}"
+  availability_zone = "${element(data.aws_availability_zones.available.names, count.index)}"
+  cidr_block        = "${cidrsubnet(aws_vpc.platform.cidr_block, 3, count.index)}"
+
+  map_public_ip_on_launch = true
 
   tags = "${map(
     "kubernetes.io/cluster/${var.platform_name}", "owned",
@@ -35,9 +31,10 @@ resource "aws_route_table" "private" {
 # Adds Egress Route to RouteTable
 
 resource "aws_route" "private_internet" {
-  route_table_id              = "${aws_route_table.private.id}"
-  destination_ipv6_cidr_block = "::/0"
-  egress_only_gateway_id      = "${aws_egress_only_internet_gateway.private_gw.id}"
+  route_table_id         = "${aws_route_table.private.id}"
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = "${aws_internet_gateway.public_gw.id}"
+  depends_on             = ["aws_route_table.public"]
 }
 
 # RouteTable to Subnet
