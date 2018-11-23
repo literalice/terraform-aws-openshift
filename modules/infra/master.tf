@@ -52,6 +52,7 @@ resource "aws_autoscaling_group" "master" {
 
   # TODO workaround
   target_group_arns = ["${split(",", var.infra_node_count > 0 ? join(",", local.master_target_groups) : join(",", local.master_infra_target_groups))}"]
+  load_balancers    = ["${aws_elb.master.name}"]
 
   launch_template = {
     id      = "${aws_launch_template.master.id}"
