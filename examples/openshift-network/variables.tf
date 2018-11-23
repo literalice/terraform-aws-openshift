@@ -1,0 +1,1 @@
+variable "platform_name" {}
