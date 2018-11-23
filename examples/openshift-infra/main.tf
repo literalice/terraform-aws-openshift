@@ -10,4 +10,6 @@ module "openshift_infra" {
   operator_cidrs = ["0.0.0.0/0"]
 
   use_spot = true
+
+  master_count = "${var.master_count}"
 }

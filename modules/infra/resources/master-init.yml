@@ -1,0 +1,7 @@
+#cloud-config
+output: { all: "| tee -a /var/log/cloud-init-output.log" }
+runcmd:
+ - curl -o /usr/local/bin/jq -L https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 && chmod +x /usr/local/bin/jq
+ - curl -kL https://bootstrap.pypa.io/get-pip.py | python
+ - pip install awscli --upgrade
+ - touch /root/.provisioning-finished && chmod 644 /root/.provisioning-finished

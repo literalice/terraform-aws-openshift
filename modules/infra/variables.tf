@@ -22,3 +22,7 @@ variable "use_spot" {
 variable "use_community" {
   default = false
 }
+
+variable "master_count" {
+  default = 1
+}
