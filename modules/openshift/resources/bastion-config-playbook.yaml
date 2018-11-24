@@ -1,0 +1,16 @@
+- hosts: all
+  become: yes
+  tasks:
+    - name: ensure a list of packages for OpenShift install
+      yum:
+        name: "{{ packages }}"
+      vars:
+        packages:
+        - openshift-ansible 
+        - atomic-openshift-clients
+        - vim
+    - name: download ocinventory
+      get_url:
+        url: https://github.com/literalice/openshift-inventory-utils/releases/download/v0.2/ocinventory_unix
+        dest: /usr/local/bin/ocinventory
+        mode: 0711

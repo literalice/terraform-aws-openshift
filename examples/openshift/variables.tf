@@ -1,0 +1,1 @@
+../../modules/openshift/variables.tf
