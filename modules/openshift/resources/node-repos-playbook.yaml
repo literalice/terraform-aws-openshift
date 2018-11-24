@@ -1,0 +1,23 @@
+- hosts: all
+  become: true
+  tasks:
+    - name: Register RHN
+      redhat_subscription:
+        username: ${rhn_username}
+        password: ${rhn_password}
+        pool_ids: ${rh_subscription_pool_id}
+        state: present
+    - name: Disable all RHSM repositories
+      rhsm_repository:
+        name: '*'
+        state: disabled
+    - name: Enable all repositories except required for openshift install
+      rhsm_repository:
+        name: "{{ item }}"
+        state: enabled
+      register: rhsm_repository
+      with_items: 
+      - rhel-7-server-rpms
+      - rhel-7-server-extras-rpms
+      - rhel-7-server-ansible-2.6-rpms
+      - rhel-7-server-ose-${openshift_major_version}-rpms
