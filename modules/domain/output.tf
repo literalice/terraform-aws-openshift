@@ -9,7 +9,3 @@ output "certificate_key" {
 output "certificate_intermediate_pem" {
   value = "${element(concat(acme_certificate.platform_domain.*.issuer_pem, list("")), 0)}"
 }
-
-output "public_dns_nameservers" {
-  value = "${flatten(aws_route53_zone.public.*.name_servers)}"
-}
