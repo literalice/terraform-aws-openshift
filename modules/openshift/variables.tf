@@ -24,3 +24,11 @@ variable "platform_private_key" {}
 variable "openshift_major_version" {
   default = "3.11"
 }
+
+variable "use_community" {
+  default = false
+}
+
+variable "master_domain" {}
+
+variable "platform_domain" {}
