@@ -1,3 +1,8 @@
+locals {
+  master_security_groups       = ["${aws_security_group.node.id}", "${aws_security_group.master_public.id}"]
+  master_infra_security_groups = ["${aws_security_group.node.id}", "${aws_security_group.master_public.id}", "${aws_security_group.public.id}"]
+}
+
 resource "aws_launch_template" "master" {
   name_prefix = "${var.platform_name}-master-"
 
@@ -36,7 +41,7 @@ resource "aws_launch_template" "master" {
 
   user_data = "${base64encode(data.template_file.master.rendered)}"
 
-  vpc_security_group_ids = ["${aws_security_group.node.id}", "${aws_security_group.master_public.id}"]
+  vpc_security_group_ids = ["${split(",", var.infra_node_count > 0 ? join(",", local.master_security_groups) : join(",", local.master_infra_security_groups))}"]
 }
 
 locals {
