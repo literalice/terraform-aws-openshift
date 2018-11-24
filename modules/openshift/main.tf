@@ -50,5 +50,5 @@ resource "null_resource" "main" {
     installer = "${data.template_file.deploy_cluster.rendered}"
   }
 
-  depends_on = ["null_resource.bastion_config", "null_resource.template_inventory"]
+  depends_on = ["null_resource.bastion_config", "null_resource.public_certificate", "null_resource.template_inventory"]
 }

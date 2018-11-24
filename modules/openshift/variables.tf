@@ -32,3 +32,15 @@ variable "use_community" {
 variable "master_domain" {}
 
 variable "platform_domain" {}
+
+variable "public_certificate_pem" {
+  default = ""
+}
+
+variable "public_certificate_key" {
+  default = ""
+}
+
+variable "public_certificate_intermediate_pem" {
+  default = ""
+}

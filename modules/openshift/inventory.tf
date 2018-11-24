@@ -12,7 +12,7 @@ data "template_file" "template_inventory" {
     openshift_deployment_type      = "${var.use_community ? "origin" : "openshift-enterprise"}"
     openshift_major_version        = "${var.openshift_major_version}"
     openshift_repos_enable_testing = "${var.use_community ? "true" : "false"}"
-    named_certificate              = false
+    named_certificate              = "${(var.public_certificate_pem == "") ? false : true}"
   }
 }
 

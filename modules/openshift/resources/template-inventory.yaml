@@ -65,11 +65,11 @@ ${openshift_deployment_type == "openshift-enterprise" ? "" : "#"}      password:
 ${openshift_deployment_type == "openshift-enterprise" ? "" : "#"}      test_image: mongodb/enterprise-operator:0.3.2
     openshift_master_overwrite_named_certificates: ${named_certificate}
 ${named_certificate ? "" : "#"}    openshift_master_named_certificates:
-${named_certificate ? "" : "#"}    - certfile: '/home/${ansible_user}/platform_cert.pem'
-${named_certificate ? "" : "#"}      keyfile: '/home/${ansible_user}/platform_cert.key'
-${named_certificate ? "" : "#"}      cafile: '/home/${ansible_user}/platform_intermediate.pem'
+${named_certificate ? "" : "#"}    - certfile: '/home/${ansible_user}/public_certificate.pem'
+${named_certificate ? "" : "#"}      keyfile: '/home/${ansible_user}/public_certificate.key'
+${named_certificate ? "" : "#"}      cafile: '/home/${ansible_user}/public_certificate_intermediate.pem'
 ${named_certificate ? "" : "#"}      names: ['${platform_domain}']
 ${named_certificate ? "" : "#"}    openshift_hosted_router_certificate:
-${named_certificate ? "" : "#"}      certfile: '/home/${ansible_user}/platform_cert.pem'
-${named_certificate ? "" : "#"}      keyfile: '/home/${ansible_user}/platform_cert.key'
-${named_certificate ? "" : "#"}      cafile: '/home/${ansible_user}/platform_intermediate.pem'
+${named_certificate ? "" : "#"}      certfile: '/home/${ansible_user}/public_certificate.pem'
+${named_certificate ? "" : "#"}      keyfile: '/home/${ansible_user}/public_certificate.key'
+${named_certificate ? "" : "#"}      cafile: '/home/${ansible_user}/public_certificate_intermediate.pem'
