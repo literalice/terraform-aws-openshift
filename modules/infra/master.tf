@@ -5,7 +5,7 @@ resource "aws_launch_template" "master" {
     device_name = "${local.base_image_root_device_name}"
 
     ebs {
-      volume_size = 32
+      volume_size = 100
     }
   }
 
@@ -15,7 +15,7 @@ resource "aws_launch_template" "master" {
     market_type = "${var.use_spot ? "spot" : ""}"
   }
 
-  instance_type = "m4.large"
+  instance_type = "${var.master_instance_type}"
 
   iam_instance_profile {
     arn = "${aws_iam_instance_profile.master.arn}"
@@ -29,7 +29,8 @@ resource "aws_launch_template" "master" {
     tags = "${map(
       "kubernetes.io/cluster/${var.platform_name}", "owned",
       "Name", "${var.platform_name}-master",
-      "Role", "master"
+      "Role", "master,node",
+      "openshift_node_group_name", "${var.infra_node_count > 0 ? "node-config-master" : "node-config-master-infra"}"
     )}"
   }
 

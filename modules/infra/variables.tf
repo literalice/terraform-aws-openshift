@@ -35,3 +35,19 @@ variable "master_count" {
 variable "infra_node_count" {
   default = 0
 }
+
+variable "compute_node_count" {
+  default = 3
+}
+
+variable "master_instance_type" {
+  default = "m4.xlarge"
+}
+
+variable "infra_node_instance_type" {
+  default = "m4.large"
+}
+
+variable "compute_node_instance_type" {
+  default = "m4.large"
+}
