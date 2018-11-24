@@ -38,18 +38,6 @@ variable "compute_node_instance_type" {
   default = "m4.large"
 }
 
-variable "bastion_spot_price" {
-  default = "0.1"
-}
-
-variable "master_spot_price" {
-  default = "0.1"
-}
-
-variable "compute_node_spot_price" {
-  default = "0.1"
-}
-
 variable "upstream" {
   description = "Sets true if you want to install Origin."
   default     = false

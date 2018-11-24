@@ -1,61 +1,42 @@
-resource "null_resource" "openshift_check" {
-  provisioner "remote-exec" {
-    inline = [
-      "export ANSIBLE_HOST_KEY_CHECKING=False",
-      "export AWS_REGION=${data.aws_region.current.name}",
-      "ocinventory -cluster '${var.platform_name}' -inventory ~/template-inventory.yml > ~/inventory.yml",
-      "cat ~/inventory.yml",
-      "ansible all -i ~/inventory.yml -m ping",
-    ]
-  }
-
-  connection {
-    type        = "ssh"
-    user        = "${module.infrastructure.bastion_ssh_user}"
-    private_key = "${module.infrastructure.platform_private_key}"
-    host        = "${module.infrastructure.bastion_endpoint}"
-  }
-
-  depends_on = ["null_resource.openshift_installer"]
+module "openshift_network" {
+  source        = "modules/network"
+  platform_name = "${var.platform_name}"
 }
 
-resource "null_resource" "openshift" {
-  provisioner "remote-exec" {
-    inline = [
-      "export UPSTREAM=${var.upstream ? "true" : ""}",
-      "sudo /root/ensure-provisioned.sh",
-      "sh ~/oc-install.sh",
-    ]
-  }
+module "openshift_infra" {
+  source = "modules/infra"
 
-  connection {
-    type        = "ssh"
-    user        = "${module.infrastructure.bastion_ssh_user}"
-    private_key = "${module.infrastructure.platform_private_key}"
-    host        = "${module.infrastructure.bastion_endpoint}"
-  }
+  platform_name = "${var.platform_name}"
 
-  triggers {
-    openshift_installer = "${null_resource.openshift_installer.id}"
-  }
+  platform_vpc_id    = "${var.platform_vpc_id}"
+  public_subnet_ids  = ["${var.public_subnet_ids}"]
+  private_subnet_ids = ["${var.private_subnet_ids}"]
 
-  depends_on = ["null_resource.openshift_installer"]
+  operator_cidrs = ["0.0.0.0/0"]
+
+  use_spot = true
+
+  master_count = "${var.master_count}"
 }
 
-resource "null_resource" "openshift_admin" {
-  provisioner "remote-exec" {
-    inline = [
-      "export ANSIBLE_HOST_KEY_CHECKING=False",
-      "ansible 'masters[0]' -i ~/inventory.yml -a 'oc adm policy add-cluster-role-to-user cluster-admin ${join(" ", var.openshift_cluster_admin_users)}'",
-    ]
-  }
+module "openshift_domain" {
+  source                              = "modules/domain"
+  platform_name                       = "${var.platform_name}"
+  platform_domain                     = "${var.platform_domain}"
+  platform_domain_administrator_email = "${var.platform_domain_administrator_email}"
+  public_lb_arn                       = "${var.public_lb_arn}"
+}
 
-  connection {
-    type        = "ssh"
-    user        = "${module.infrastructure.bastion_ssh_user}"
-    private_key = "${module.infrastructure.platform_private_key}"
-    host        = "${module.infrastructure.bastion_endpoint}"
-  }
+module "openshift" {
+  source = "modules/openshift"
 
-  depends_on = ["null_resource.openshift"]
+  platform_name           = "${var.platform_name}"
+  bastion_ssh_user        = "${var.bastion_ssh_user}"
+  bastion_endpoint        = "${var.bastion_endpoint}"
+  platform_private_key    = "${var.platform_private_key}"
+  rhn_username            = "${var.rhn_username}"
+  rhn_password            = "${var.rhn_password}"
+  rh_subscription_pool_id = "${var.rh_subscription_pool_id}"
+  master_domain           = "${var.master_domain}"
+  platform_domain         = "${var.platform_domain}"
 }
