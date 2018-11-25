@@ -1,6 +1,4 @@
 resource "null_resource" "public_certificate" {
-  count = "${var.public_certificate_pem == "" ? 0 : 1}"
-
   provisioner "file" {
     content     = "${var.public_certificate_pem}"
     destination = "~/public_certificate.pem"

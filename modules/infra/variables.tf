@@ -3,11 +3,13 @@ variable "platform_name" {}
 variable "platform_vpc_id" {}
 
 variable "public_subnet_ids" {
-  type = "list"
+  type    = "list"
+  default = []
 }
 
 variable "private_subnet_ids" {
-  type = "list"
+  type    = "list"
+  default = []
 }
 
 variable "operator_cidrs" {

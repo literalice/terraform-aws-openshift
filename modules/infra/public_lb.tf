@@ -2,7 +2,7 @@ resource "aws_lb" "public" {
   name                             = "${var.platform_name}-public"
   internal                         = false
   load_balancer_type               = "network"
-  subnets                          = ["${data.aws_subnet.public.*.id}"]
+  subnets                          = ["${var.public_subnet_ids}"]
   enable_cross_zone_load_balancing = true
 
   tags = "${map(

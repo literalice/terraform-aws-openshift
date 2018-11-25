@@ -1,6 +1,6 @@
 resource "aws_elb" "master" {
   name     = "${var.platform_name}-master"
-  subnets  = ["${data.aws_subnet.private.*.id}"]
+  subnets  = ["${var.private_subnet_ids}"]
   internal = true
 
   security_groups = ["${aws_security_group.node.id}"]
