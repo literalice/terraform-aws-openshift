@@ -56,6 +56,8 @@ OSEv3:
       - cpu=100m,memory=100Mi
     openshift_certificate_expiry_warning_days: 30
     openshift_master_admission_plugin_config: '{ "MutatingAdmissionWebhook": { "configuration": { "apiVersion": "apiserver.config.k8s.io/v1alpha1", "kubeConfigFile": "/etc/origin/master/admin.kubeconfig", "kind": "WebhookAdmission" } }, "ValidatingAdmissionWebhook": { "configuration": { "apiVersion": "apiserver.config.k8s.io/v1alpha1", "kubeConfigFile": "/etc/origin/master/admin.kubeconfig", "kind": "WebhookAdmission" } } }'
+    openshift_cluster_admin_users:
+    - admin
 ${openshift_deployment_type == "openshift-enterprise" ? "" : "#"}    oreg_auth_user: "${rhn_username}"
 ${openshift_deployment_type == "openshift-enterprise" ? "" : "#"}    oreg_auth_password: "${rhn_password}"
 ${openshift_deployment_type == "openshift-enterprise" ? "" : "#"}    openshift_additional_registry_credentials:

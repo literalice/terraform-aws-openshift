@@ -1,0 +1,12 @@
+- name: OpenShift Users Installation
+  hosts: oo_first_master
+  tasks:
+  - name: cluster-admin
+    oc_adm_policy_user:
+      user: "{{ item }}"
+      resource_kind: cluster-role
+      resource_name: cluster-admin
+      state: present
+    with_items:
+    - "{{ openshift_cluster_admin_users }}"
+
