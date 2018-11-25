@@ -1,0 +1,41 @@
+# Master url can be accessed from:
+operator_cidrs = ["0.0.0.0/0"]
+
+# Serviced hosted in the cluster can be accessed from:
+public_cidrs = ["0.0.0.0/0"]
+
+# Use spot instance
+use_spot = true
+
+# Master instance count
+master_count = 1
+
+# Master instance type
+master_instance_type = "m4.xlarge"
+
+# Compute node count
+compute_node_count = 3
+
+# Compute instance type
+compute_node_instance_type = "m4.large"
+
+# Platform name
+platform_name = "mycluster"
+
+# If you want to use OKD, set true
+use_community = false
+
+# Platform domain. master: https://<platform domain>:8443/
+platform_domain = "mycluster.example.com"
+
+# For let's encrypt: Doamin admin's email address:
+platform_domain_administrator_email = "admin@example.com"
+
+# Red Hat Network username:
+rhn_username = "admin@example.com"
+
+# Red Hat Network password:
+rhn_password = "xxxx"
+
+# OpenShift subscription's pool ID
+rh_subscription_pool_id = "xxxxxx"
