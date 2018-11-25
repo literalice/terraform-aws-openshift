@@ -2,10 +2,6 @@ variable "platform_name" {
   description = "The name of the cluster that is used for tagging some resources"
 }
 
-variable "key_pair_private_key_path" {
-  description = "AWS key pair that is used for instances of the cluster includes the bastion"
-}
-
 variable "operator_cidrs" {
   type        = "list"
   default     = ["0.0.0.0/0"]
@@ -18,28 +14,28 @@ variable "public_cidrs" {
   description = "CIDRS that is allowed from which public users can access served services in the cluster"
 }
 
-variable "bastion_image_id" {}
+variable "use_spot" {
+  default = false
+}
 
-variable "node_image_id" {}
+variable "master_count" {
+  default = 1
+}
 
-variable "master_count" {}
-
-variable "compute_node_count" {}
-
-variable "bastion_instance_type" {
-  default = "m4.large"
+variable "compute_node_count" {
+  default = 3
 }
 
 variable "master_instance_type" {
-  default = "m4.large"
+  default = "m4.xlarge"
 }
 
 variable "compute_node_instance_type" {
   default = "m4.large"
 }
 
-variable "upstream" {
-  description = "Sets true if you want to install Origin."
+variable "use_community" {
+  description = "Sets true if you want to install OKD."
   default     = false
 }
 
@@ -56,15 +52,6 @@ variable "rhn_username" {
 variable "rhn_password" {
   description = "Red Hat Network login password for registration system of the OpenShift Container Platform cluster"
   default     = ""
-}
-
-variable "openshift_major_version" {
-  default = "3.11"
-}
-
-variable "openshift_cluster_admin_users" {
-  type    = "list"
-  default = ["admin"]
 }
 
 # Domains

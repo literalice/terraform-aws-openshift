@@ -10,8 +10,8 @@ module "infra" {
   use_community = "${var.use_community}"
 
   platform_vpc_id    = "${module.network.platform_vpc_id}"
-  public_subnet_ids  = ["${module.public_subnet_ids}"]
-  private_subnet_ids = ["${module.private_subnet_ids}"]
+  public_subnet_ids  = ["${module.network.public_subnet_ids}"]
+  private_subnet_ids = ["${module.network.private_subnet_ids}"]
 
   operator_cidrs = ["${var.operator_cidrs}"]
   public_cidrs   = ["${var.public_cidrs}"]
