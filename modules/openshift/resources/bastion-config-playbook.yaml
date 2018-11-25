@@ -1,12 +1,11 @@
 - hosts: all
-  become: yes
+  become: true
   tasks:
     - name: ensure a list of packages for OpenShift install
       yum:
         name: "{{ packages }}"
       vars:
         packages:
-        - openshift-ansible 
         - atomic-openshift-clients
         - vim
     - name: download ocinventory

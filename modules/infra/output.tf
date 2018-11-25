@@ -12,7 +12,7 @@ output "platform_private_key" {
 }
 
 output "public_lb_arn" {
-  value = ["${aws_lb.public.arn}"]
+  value = "${aws_lb.public.arn}"
 }
 
 output "master_domain" {

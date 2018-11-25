@@ -20,7 +20,6 @@ resource "null_resource" "bastion_repos" {
     inline = [
       "chmod +x ~/bastion-repos.sh",
       "sh ~/bastion-repos.sh",
-      "ansible --version",
     ]
   }
 
