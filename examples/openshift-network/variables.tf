@@ -1,1 +1,0 @@
-variable "platform_name" {}
