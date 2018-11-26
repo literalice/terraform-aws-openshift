@@ -14,9 +14,6 @@ if [ -z $USE_COMMUNITY ]; then
     ansible-playbook -i $HOME/inventory.yaml $HOME/node-repos-playbook.yaml || { echo "Error on register repos" ; exit 1 ; }
 else
     echo "It's a OKD"
-    ansible all -i $HOME/inventory.yaml -m yum -a 'name=wget,git,net-tools,bind-utils,yum-utils,iptables-services,bridge-utils,bash-completion,kexec-tools,sos,psacct,atomic state=present'
-    ansible all -i $HOME/inventory.yaml -m yum -a 'name=docker-1.13.1 state=present'
-    ansible all -i $HOME/inventory.yaml -m systemd -a 'name=docker state=started enabled=yes'
 fi
 
 cd /usr/share/ansible/openshift-ansible

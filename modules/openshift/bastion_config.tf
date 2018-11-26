@@ -6,17 +6,26 @@ data "template_file" "bastion_config_playbook" {
   }
 }
 
+data "template_file" "bastion_config" {
+  template = "${file("${path.module}/resources/bastion-config.sh")}"
+}
+
 resource "null_resource" "bastion_config" {
   provisioner "file" {
     content     = "${data.template_file.bastion_config_playbook.rendered}"
     destination = "~/bastion-config-playbook.yaml"
   }
 
+  provisioner "file" {
+    content     = "${data.template_file.bastion_config.rendered}"
+    destination = "~/bastion-config.sh"
+  }
+
   provisioner "remote-exec" {
     inline = [
-      "export ANSIBLE_HOST_KEY_CHECKING=False",
-      "sudo yum install -y openshift-ansible",
-      "ansible-playbook -i localhost, -c local ~/bastion-config-playbook.yaml",
+      "chmod +x ~/bastion-config.sh",
+      "export USE_COMMUNITY=${var.use_community ? "true" : ""}",
+      "sh  ~/bastion-config.sh",
     ]
   }
 

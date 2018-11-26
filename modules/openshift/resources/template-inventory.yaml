@@ -12,6 +12,8 @@ OSEv3:
     ansible_ssh_user: ${ansible_user}
     ansible_become: true
     openshift_deployment_type: ${openshift_deployment_type}
+${openshift_deployment_type == "openshift-enterprise" ? "#" : ""}    openshift_additional_repos:
+${openshift_deployment_type == "openshift-enterprise" ? "#" : ""}    - {id: 'centos-okd-ci', name: 'centos-okd-ci', baseurl: 'https://rpms.svc.ci.openshift.org/openshift-origin-v3.11', gpgcheck: '0', enabled: '1'}
     openshift_release: "${openshift_major_version}"
     openshift_repos_enable_testing: ${openshift_repos_enable_testing}
     openshift_master_identity_providers:

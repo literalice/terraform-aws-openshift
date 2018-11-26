@@ -6,8 +6,22 @@
         name: "{{ packages }}"
       vars:
         packages:
-        - atomic-openshift-clients
         - vim
+        - git
+    - name: ensure a list of packages for OpenShift 
+      yum:
+        name: "{{ packages }}"
+      vars:
+        packages:
+        - openshift-ansible
+        - atomic-openshift-clients
+      when: ansible_distribution in ['RedHat']
+    - name: install openshift-ansible from git repo
+      git:
+        repo: 'https://github.com/openshift/openshift-ansible.git'
+        dest: /usr/share/ansible/openshift-ansible
+        version: release-3.11
+      when: ansible_distribution in ['CentOS']
     - name: download ocinventory
       get_url:
         url: https://github.com/literalice/openshift-inventory-utils/releases/download/v0.2/ocinventory_unix
