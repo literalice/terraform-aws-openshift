@@ -16,9 +16,7 @@ resource "aws_launch_template" "master" {
 
   image_id = "${local.base_image_id}"
 
-  instance_market_options {
-    market_type = "${var.use_spot ? "spot" : ""}"
-  }
+  instance_market_options = "${local.spot_type[var.use_spot ? "enabled" : "disabled"]}"
 
   instance_type = "${var.master_instance_type}"
 
