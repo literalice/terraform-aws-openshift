@@ -7,10 +7,12 @@
         password: ${rhn_password}
         pool_ids: ${rh_subscription_pool_id}
         state: present
+      when: ansible_distribution in ['RedHat']
     - name: Disable all RHSM repositories
       rhsm_repository:
         name: '*'
         state: disabled
+      when: ansible_distribution in ['RedHat']
     - name: Enable all repositories except required for openshift install
       rhsm_repository:
         name: "{{ item }}"

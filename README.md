@@ -2,11 +2,15 @@
 
 Builds OpenShift reference archtecture on AWS.
 
-Now it supports OCP(working for OKD).
+It supports OCP and OKD
 
 ## Prerequisites
 
-* You need to create [Public Route53 Zone](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/CreatingHostedZone.html) for your platform domain. if your master domain is `mycluster.example.com`, a Public Route53 Zone named `mycluster.example.com` is required.
+If you want to use a custom domain for your OpenShift platform, 
+
+* You need to create [Public Route53 Zone](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/CreatingHostedZone.html) for your platform domain. If your master domain is `mycluster.example.com`, a Public Route53 Zone named `mycluster.example.com` is required.
+
+When you use nip.io wildcard domain, you don't have to prepare public dns settings. See [a example](/examples/nip).
 
 If you are building a OCP cluster,
 
@@ -17,7 +21,9 @@ If you are building a OCP cluster,
 
 ### Sets terraform variables for creating openshift cluster.
 
-See: [OCP examples](/examples/ocp/terraform.tfvars.example)
+OCP: [OCP examples](/examples/ocp/terraform.tfvars.example)
+
+OKD: [OKD examples](/examples/nip/terraform.tfvars.example)
 
 ### Starts a cluster building
 

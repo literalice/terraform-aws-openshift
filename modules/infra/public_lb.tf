@@ -10,3 +10,7 @@ resource "aws_lb" "public" {
     "Name", "${var.platform_name}-public"
   )}"
 }
+
+data "dns_a_record_set" "platform_public_ip_set" {
+  host = "${aws_lb.public.dns_name}"
+}

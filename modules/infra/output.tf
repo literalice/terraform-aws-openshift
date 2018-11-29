@@ -18,3 +18,7 @@ output "public_lb_arn" {
 output "master_domain" {
   value = "${aws_route53_record.master.name}"
 }
+
+output "platform_public_ip_set" {
+  value = "${data.dns_a_record_set.platform_public_ip_set.addrs}"
+}
