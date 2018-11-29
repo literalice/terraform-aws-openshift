@@ -1,0 +1,52 @@
+- hosts: all
+  become: true
+  tasks:
+    - name: Register RHN
+      redhat_subscription:
+        username: ${rhn_username}
+        password: ${rhn_password}
+        pool_ids: ${rh_subscription_pool_id}
+        state: present
+    - name: Disable all RHSM repositories
+      rhsm_repository:
+        name: '*'
+        state: disabled
+    - name: Enable all repositories except required for openshift install
+      rhsm_repository:
+        name: "{{ item }}"
+        state: enabled
+      register: rhsm_repository
+      with_items: 
+      - rhel-7-server-rpms
+      - rhel-7-server-extras-rpms
+      - rhel-7-server-ansible-2.6-rpms
+      - rhel-7-server-ose-${openshift_major_version}-rpms
+      when: ansible_distribution in ['RedHat']
+    - name: "disabled obsolete for yum" # https://github.com/openshift/origin/issues/20653
+      lineinfile:
+        dest: '/etc/yum.conf'
+        state: present
+        regexp: '^obsoletes=1$'
+        line: 'obsoletes=0'
+      when: ansible_distribution in ['CentOS']
+    - name: ensure a list of packages for OKD install
+      yum:
+        name: "{{ packages }}"
+      vars:
+        packages:
+        - NetworkManager
+        - docker-1.13.1
+      when: ansible_distribution in ['CentOS']
+    - name: enable NetworkManager
+      systemd:
+        name: NetworkManager
+        state: started
+        enabled: yes
+      when: ansible_distribution in ['CentOS']
+    - name: enable Docker
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+      when: ansible_distribution in ['CentOS']
+

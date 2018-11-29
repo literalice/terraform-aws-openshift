@@ -9,6 +9,5 @@ if [ -z $USE_COMMUNITY ]; then
     sudo subscription-manager repos --enable="rhel-7-server-ose-${openshift_major_version}-rpms"
 else
     echo "It's a OKD"
-    sudo yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-    sudo sed -i -e "s/^enabled=1/enabled=0/" /etc/yum.repos.d/epel.repo
+    sudo yum -y install centos-release-ansible26
 fi

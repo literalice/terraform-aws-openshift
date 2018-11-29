@@ -8,7 +8,8 @@
         packages:
         - vim
         - git
-    - name: ensure a list of packages for OpenShift 
+        - tmux
+    - name: ensure a list of packages for OCP
       yum:
         name: "{{ packages }}"
       vars:
@@ -16,11 +17,21 @@
         - openshift-ansible
         - atomic-openshift-clients
       when: ansible_distribution in ['RedHat']
+    - name: ensure a list of packages for OKD 
+      yum:
+        name: "{{ packages }}"
+      vars:
+        packages:
+        - pyOpenSSL
+        - python-lxml
+        - java-1.8.0-openjdk-headless
+        - patch
+      when: ansible_distribution in ['CentOS']
     - name: install openshift-ansible from git repo
       git:
         repo: 'https://github.com/openshift/openshift-ansible.git'
         dest: /usr/share/ansible/openshift-ansible
-        version: release-3.11
+        version: release-${openshift_major_version}
       when: ansible_distribution in ['CentOS']
     - name: download ocinventory
       get_url:

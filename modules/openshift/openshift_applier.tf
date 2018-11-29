@@ -18,13 +18,6 @@ resource "null_resource" "openshift_applier" {
     destination = "~/openshift-applier.sh"
   }
 
-  provisioner "remote-exec" {
-    inline = [
-      "chmod +x ~/openshift-applier.sh",
-      "sh ~/openshift-applier.sh",
-    ]
-  }
-
   connection {
     type        = "ssh"
     user        = "${var.bastion_ssh_user}"
@@ -33,9 +26,6 @@ resource "null_resource" "openshift_applier" {
   }
 
   triggers {
-    inventory = "${data.template_file.template_inventory.rendered}"
-    script    = "${data.template_file.openshift_applier.rendered}"
+    script = "${data.template_file.openshift_applier.rendered}"
   }
-
-  depends_on = ["null_resource.main"]
 }

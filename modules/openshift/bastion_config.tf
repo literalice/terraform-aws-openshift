@@ -24,7 +24,6 @@ resource "null_resource" "bastion_config" {
   provisioner "remote-exec" {
     inline = [
       "chmod +x ~/bastion-config.sh",
-      "export USE_COMMUNITY=${var.use_community ? "true" : ""}",
       "sh  ~/bastion-config.sh",
     ]
   }
