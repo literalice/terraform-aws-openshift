@@ -17,10 +17,18 @@ ${openshift_deployment_type == "openshift-enterprise" ? "#" : ""}    - {id: 'cen
     openshift_release: "${openshift_major_version}"
     openshift_repos_enable_testing: ${openshift_repos_enable_testing}
     openshift_master_identity_providers:
-      - name: 'test_identity_provider'
-        login: true
-        challenge: true
-        kind: 'AllowAllPasswordIdentityProvider'
+${use_allow_all_identity_provider == "true" ? "" : "#"}      - name: 'all'
+${use_allow_all_identity_provider == "true" ? "" : "#"}        login: true
+${use_allow_all_identity_provider == "true" ? "" : "#"}        challenge: true
+${use_allow_all_identity_provider == "true" ? "" : "#"}        kind: 'AllowAllPasswordIdentityProvider'
+${use_google_identity_provider == "true" ? "" : "#"}      - name: google
+${use_google_identity_provider == "true" ? "" : "#"}        challenge: false
+${use_google_identity_provider == "true" ? "" : "#"}        login: true
+${use_google_identity_provider == "true" ? "" : "#"}        mappingMethod: claim
+${use_google_identity_provider == "true" ? "" : "#"}        kind: GoogleIdentityProvider
+${use_google_identity_provider == "true" ? "" : "#"}        clientID: "${google_client_id}"
+${use_google_identity_provider == "true" ? "" : "#"}        clientSecret: "${google_client_secret}"
+${use_google_identity_provider == "true" ? "" : "#"}        hostedDomain: "${google_client_domain}"
     os_sdn_network_plugin_name: 'redhat/openshift-ovs-networkpolicy'
     openshift_disable_check: 'disk_availability,memory_availability,docker_image_availability'
     openshift_master_cluster_hostname: ${master_domain}
