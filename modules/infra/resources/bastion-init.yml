@@ -7,7 +7,7 @@ write_files:
     permissions: '0600'
 -  content: |
     #!/bin/bash -ex
-    REGION=`curl -s http://169.254.169.254/latest/meta-data/local-hostname | cut -d '.' -f2`
+    REGION=`curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | jq .region | tr -d '"'`
     export AWS_DEFAULT_REGION=$${REGION}
     INSTANCE_ID=`curl http://169.254.169.254/latest/meta-data/instance-id`
     for ALLOC_ID in `aws ec2 describe-addresses --filter "Name=domain,Values=vpc" "Name=tag:Role,Values=bastion" "Name=tag:kubernetes.io/cluster/${platform_name},Values=owned" | /usr/local/bin/jq '.Addresses[].AllocationId' | cut -d '"' -f 2`
