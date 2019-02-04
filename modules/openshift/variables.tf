@@ -1,5 +1,31 @@
 variable "platform_name" {}
 
+variable "identity_providers" {
+    type        = "list"
+    description = "The identity providers to enable (AllowAllIdentityProvider, GoogleIdentityProvider)"
+    default     = [
+        "AllowAllIdentityProvider"
+    ]
+}
+
+variable "google_client_id" {
+    type        = "string"
+    description = "The Google client id used by the GoogleIdentityProvider"
+    default     = ""
+}
+
+variable "google_client_secret" {
+    type        = "string"
+    description = "The client secret used by the GoogleIdentityProvider"
+    default     = ""
+}
+
+variable "google_client_domain" {
+    type        = "string"
+    description = "The domain used by the GoogleIdentityProvider"
+    default     = ""
+}
+
 variable "rh_subscription_pool_id" {
   description = "Red Hat subscription pool id for OpenShift Container Platform"
   default     = ""
