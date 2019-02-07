@@ -30,6 +30,18 @@ variable "use_community" {
   default = false
 }
 
+variable "use_specific_base_image" {
+    default = false
+}
+
+variable "specific_base_image_id" {
+    default = ""
+}
+
+variable "specific_base_image_root_device_name" {
+    default = ""
+}
+
 variable "master_count" {
   default = 1
 }

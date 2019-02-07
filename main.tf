@@ -8,6 +8,9 @@ module "infra" {
 
   platform_name = "${var.platform_name}"
   use_community = "${var.use_community}"
+  use_specific_base_image = "${var.use_specific_base_image}"
+  specific_base_image_id = "${var.specific_base_image_id}"
+  specific_base_image_root_device_name = "${var.specific_base_image_root_device_name}"
 
   platform_vpc_id    = "${module.network.platform_vpc_id}"
   public_subnet_ids  = ["${module.network.public_subnet_ids}"]

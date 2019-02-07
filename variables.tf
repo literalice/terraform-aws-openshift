@@ -39,6 +39,22 @@ variable "use_community" {
   default     = false
 }
 
+
+variable "use_specific_base_image" {
+  description = "Indicates whether the module should use a specific base image or find the latest."
+  default     = false
+}
+
+variable "specific_base_image_id" {
+  description = "Sets the base image id."
+  default     = ""
+}
+
+variable "specific_base_image_root_device_name" {
+  description = "Sets the root device name of the base image."
+  default     = ""
+}
+
 variable "rh_subscription_pool_id" {
   description = "Red Hat subscription pool id for OpenShift Container Platform"
   default     = ""
