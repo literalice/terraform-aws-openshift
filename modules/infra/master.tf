@@ -33,7 +33,8 @@ resource "aws_launch_template" "master" {
       "kubernetes.io/cluster/${var.platform_name}", "owned",
       "Name", "${var.platform_name}-master",
       "Role", "master,node",
-      "openshift_node_group_name", "${var.infra_node_count > 0 ? "node-config-master" : "node-config-master-infra"}"
+      "openshift_node_group_name", "${var.infra_node_count > 0 ? "node-config-master" : "node-config-master-infra"}",
+      "kubernetes.io/role/master", "true"
     )}"
   }
 
