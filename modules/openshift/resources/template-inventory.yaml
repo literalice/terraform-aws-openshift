@@ -41,29 +41,6 @@ ${use_google_identity_provider == "true" ? "" : "#"}        hostedDomain: "${goo
     openshift_logging_es_memory_limit: 1024M
     openshift_logging_es_nodeselector:
       node-role.kubernetes.io/infra: "true"
-    openshift_node_kubelet_args:
-      eviction-hard:
-      - memory.available<4%
-      - nodefs.available<4%
-      - nodefs.inodesFree<4%
-      - imagefs.available<4%
-      - imagefs.inodesFree<4%
-      eviction-soft:
-      - memory.available<8%
-      - nodefs.available<8%
-      - nodefs.inodesFree<8%
-      - imagefs.available<8%
-      - imagefs.inodesFree<8%
-      eviction-soft-grace-period:
-      - memory.available=1m30s
-      - nodefs.available=1m30s
-      - nodefs.inodesFree=1m30s
-      - imagefs.available=1m30s
-      - imagefs.inodesFree=1m30s
-      kube-reserved:
-      - cpu=100m,memory=100Mi
-      system-reserved:
-      - cpu=100m,memory=100Mi
     openshift_certificate_expiry_warning_days: 30
     openshift_master_admission_plugin_config: '{ "MutatingAdmissionWebhook": { "configuration": { "apiVersion": "apiserver.config.k8s.io/v1alpha1", "kubeConfigFile": "/etc/origin/master/admin.kubeconfig", "kind": "WebhookAdmission" } }, "ValidatingAdmissionWebhook": { "configuration": { "apiVersion": "apiserver.config.k8s.io/v1alpha1", "kubeConfigFile": "/etc/origin/master/admin.kubeconfig", "kind": "WebhookAdmission" } } }'
     openshift_cluster_admin_users:
