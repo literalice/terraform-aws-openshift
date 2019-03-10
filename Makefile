@@ -8,7 +8,7 @@ sshspec:
 	@terraform output bastion_ssh_spec
 
 ssh: key
-	@ssh `make sshspec` -i /tmp/.openshift-`terraform output platform_name`.key
+	@ssh `terraform output bastion_ssh_spec` -i /tmp/.openshift-`terraform output platform_name`.key
 
 console:
 	@open `terraform output master_public_url`
