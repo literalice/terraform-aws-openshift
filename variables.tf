@@ -2,6 +2,11 @@ variable "platform_name" {
   description = "The name of the cluster that is used for tagging some resources"
 }
 
+variable "availability_zones" {
+  type        = "list"
+  default     = []
+}
+
 variable "operator_cidrs" {
   type        = "list"
   default     = ["0.0.0.0/0"]

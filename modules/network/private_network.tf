@@ -2,13 +2,13 @@
 
 # For Outbound access
 locals {
-  private_subnet_count = "${length(data.aws_availability_zones.available.names)}"
+  private_subnet_count = "${length(local.availability_zones)}"
 }
 
 resource "aws_subnet" "private" {
   count             = "${local.private_subnet_count}"
   vpc_id            = "${aws_vpc.platform.id}"
-  availability_zone = "${element(data.aws_availability_zones.available.names, count.index)}"
+  availability_zone = "${element(local.availability_zones, count.index)}"
   cidr_block        = "${cidrsubnet(aws_vpc.platform.cidr_block, ceil(log(local.private_subnet_count + local.public_subnet_count, 2)), count.index)}"
 
   map_public_ip_on_launch = true
