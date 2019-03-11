@@ -1,12 +1,12 @@
 # Public subnet: for router LB
 
 locals {
-  public_subnet_count = "${length(data.aws_availability_zones.available.names)}"
+  public_subnet_count = "${length(local.availability_zones)}"
 }
 
 resource "aws_subnet" "public" {
   count                   = "${local.public_subnet_count}"
-  availability_zone       = "${element(data.aws_availability_zones.available.names, count.index)}"
+  availability_zone       = "${element(local.availability_zones, count.index)}"
   vpc_id                  = "${aws_vpc.platform.id}"
   cidr_block              = "${cidrsubnet(aws_vpc.platform.cidr_block, ceil(log(local.private_subnet_count + local.public_subnet_count, 2)), local.private_subnet_count + count.index)}"
   map_public_ip_on_launch = true
