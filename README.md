@@ -45,3 +45,15 @@ Once your cluster is launched successfully, you can access your cluster's admin 
 ```
 make ssh
 ```
+
+### Suspend / Resume instances
+
+Only for on-demand instances (not spot instances)
+
+```bash
+# suspend
+./bin/suspend.sh
+
+# resume
+./bin/resume.sh
+```
