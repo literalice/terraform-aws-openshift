@@ -3,7 +3,7 @@ output "bastion_ssh_user" {
 }
 
 output "bastion_endpoint" {
-  value = "${aws_eip.bastion.public_ip}"
+  value = "${aws_instance.bastion.public_ip}"
 }
 
 output "platform_private_key" {

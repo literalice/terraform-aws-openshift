@@ -20,10 +20,6 @@ resource "aws_launch_template" "master" {
 
   instance_type = "${var.master_instance_type}"
 
-  iam_instance_profile {
-    arn = "${aws_iam_instance_profile.master.arn}"
-  }
-
   key_name = "${aws_key_pair.platform.id}"
 
   tag_specifications {

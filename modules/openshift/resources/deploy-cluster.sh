@@ -6,6 +6,8 @@ export ANSIBLE_FORKS=5
 export ANSIBLE_PIPELINING=True
 
 export AWS_REGION="${platform_aws_region}"
+export AWS_ACCESS_KEY_ID="${bastion_aws_access_key_id}"
+export AWS_SECRET_ACCESS_KEY="${bastion_aws_secret_access_key}"
 
 ocinventory -cluster "${platform_name}" -inventory $HOME/template-inventory.yaml > $HOME/inventory.yaml
 

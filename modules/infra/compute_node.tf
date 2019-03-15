@@ -15,10 +15,6 @@ resource "aws_launch_template" "compute_node" {
 
   instance_type = "${var.compute_node_instance_type}"
 
-  iam_instance_profile {
-    arn = "${aws_iam_instance_profile.compute_node.arn}"
-  }
-
   key_name = "${aws_key_pair.platform.id}"
 
   tag_specifications {

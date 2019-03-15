@@ -8,6 +8,8 @@ data "template_file" "template_inventory" {
     rhn_password                    = "${var.rhn_password}"
     rh_subscription_pool_id         = "${var.rh_subscription_pool_id}"
     platform_domain                 = "${var.platform_domain}"
+    platform_aws_access_key_id      = "${var.platform_aws_access_key_id}"
+    platform_aws_secret_access_key  = "${var.platform_aws_secret_access_key}"
     master_domain                   = "${var.master_domain}"
     openshift_deployment_type       = "${var.use_community ? "origin" : "openshift-enterprise"}"
     openshift_major_version         = "${var.openshift_major_version}"

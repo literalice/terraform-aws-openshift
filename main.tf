@@ -1,6 +1,6 @@
 module "network" {
-  source        = "modules/network"
-  platform_name = "${var.platform_name}"
+  source             = "modules/network"
+  platform_name      = "${var.platform_name}"
   availability_zones = "${var.availability_zones}"
 }
 
@@ -40,6 +40,11 @@ module "openshift" {
   platform_name = "${var.platform_name}"
   use_community = "${var.use_community}"
 
+  bastion_aws_access_key_id      = "${var.bastion_aws_access_key_id}"
+  bastion_aws_secret_access_key  = "${var.bastion_aws_secret_access_key}"
+  platform_aws_access_key_id     = "${var.platform_aws_access_key_id}"
+  platform_aws_secret_access_key = "${var.platform_aws_secret_access_key}"
+
   bastion_ssh_user        = "${module.infra.bastion_ssh_user}"
   bastion_endpoint        = "${module.infra.bastion_endpoint}"
   platform_private_key    = "${module.infra.platform_private_key}"
@@ -53,9 +58,9 @@ module "openshift" {
   public_certificate_key              = "${module.domain.public_certificate_key}"
   public_certificate_intermediate_pem = "${module.domain.public_certificate_intermediate_pem}"
 
-  identity_providers         = "${var.identity_providers}"
+  identity_providers = "${var.identity_providers}"
 
-  google_client_id           = "${var.google_client_id}"
-  google_client_secret       = "${var.google_client_secret}"
-  google_client_domain       = "${var.google_client_domain}"
+  google_client_id     = "${var.google_client_id}"
+  google_client_secret = "${var.google_client_secret}"
+  google_client_domain = "${var.google_client_domain}"
 }
