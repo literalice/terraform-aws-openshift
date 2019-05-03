@@ -2,10 +2,16 @@ variable "platform_name" {}
 
 variable "identity_providers" {
     type        = "list"
-    description = "The identity providers to enable (AllowAllIdentityProvider, GoogleIdentityProvider)"
+    description = "The identity providers to enable (AllowAllIdentityProvider, HtpasswdIdentityProvider, GoogleIdentityProvider)"
     default     = [
         "AllowAllIdentityProvider"
     ]
+}
+
+variable "admin_pwd_prehashed" {
+    type        = "string"
+    description = "A prehashed htpasswd password for admin user when using HtpasswdIdentityProvider. Defaults to 'admin'"
+    default     = "$apr1$DgW4jWuV$AectJayLGPfNdoB23CBED."
 }
 
 variable "google_client_id" {
