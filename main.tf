@@ -54,6 +54,7 @@ module "openshift" {
   public_certificate_intermediate_pem = "${module.domain.public_certificate_intermediate_pem}"
 
   identity_providers         = "${var.identity_providers}"
+  admin_pwd_prehashed        = "${var.admin_pwd_prehashed}"
 
   google_client_id           = "${var.google_client_id}"
   google_client_secret       = "${var.google_client_secret}"

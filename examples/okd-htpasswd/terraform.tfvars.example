@@ -4,7 +4,7 @@ platform_name = "okd"
 use_community = true
 
 # Use nip(default). Master: https://xx.xx.xx.xx.nip.io:8443/
-platform_domain = "okd-dev.ocpgbc.com"
+platform_domain = "okd.example.com"
 
 master_count = 1
 
