@@ -1,0 +1,25 @@
+platform_name = "okd"
+
+ # Use OKD
+use_community = true
+
+# Use nip(default). Master: https://xx.xx.xx.xx.nip.io:8443/
+platform_domain = "okd.example.com"
+
+master_count = 1
+
+master_instance_type = "m4.large"
+
+compute_node_count = 1
+
+compute_node_instance_type = "m4.large"
+
+operator_cidrs = ["0.0.0.0/0"]
+
+public_cidrs = ["0.0.0.0/0"]
+
+use_spot = true
+
+identity_providers = ["HtpasswdIdentityProvider"]
+# Setting passwd to 'admin1234'. Used http://www.htaccesstools.com/htpasswd-generator/
+admin_pwd_prehashed = "$apr1$lVz.iFbA$OvPQhDQssqLKMcBfkKe15/"
